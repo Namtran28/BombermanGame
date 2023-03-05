@@ -19,7 +19,7 @@ Viết một phiên bản Java mô phỏng lại trò chơi [Bomberman](https://
    - Nhóm đối tượng động (*Bomber*, *Enemy*, *Bomb*).
    - Nhóm đối tượng tĩnh (*Grass*, *Wall*, *Brick*, *Door*, *Item*).
 
-### Các đối tượng cần thiết kế (tận dụng tối đa sức mạnh của OOP: tái sử dụng code, dex dàng maintain.
+### Các đối tượng cần thiết kế (tận dụng tối đa sức mạnh của OOP: tái sử dụng code, dễ dàng maintain.
 
 - ![](res/sprites/player_down.png) *Bomber* là nhân vật chính của trò chơi. Bomber có thể di chuyển theo 4 hướng trái/phải/lên/xuống theo sự điều khiển của người chơi. 
 - ![](res/sprites/balloom_left1.png) *Enemy* là các đối tượng mà Bomber phải tiêu diệt hết để có thể qua Level. Enemy có thể di chuyển ngẫu nhiên hoặc tự đuổi theo Bomber tùy theo loại Enemy.
@@ -32,7 +32,7 @@ Viết một phiên bản Java mô phỏng lại trò chơi [Bomberman](https://
 
 - ![](res/sprites/portal.png) *Portal* là đối tượng được giấu phía sau một đối tượng Brick. Khi Brick đó bị phá hủy, Portal sẽ hiện ra và nếu tất cả Enemy đã bị tiêu diệt thì người chơi có thể qua Level khác bằng cách di chuyển vào vị trí của Portal.
 
-### Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick bị phá hủy. Bomber có thể sử dụng Item bằng cách di chuyển vào vị trí của Item. Thông tin về chức năng của các Item được liệt kê như dưới đây:
+### Thông tin về chức năng của các Item :
 
 - ![](res/sprites/powerup_speed.png) *SpeedItem*: Khi sử dụng Item này, Bomber sẽ được tăng vận tốc di chuyển thêm một giá trị thích hợp.
 - ![](res/sprites/powerup_flames.png) *FlameItem*: Item này giúp tăng phạm vi ảnh hưởng của Bomb khi nổ (độ dài các Flame lớn hơn).
