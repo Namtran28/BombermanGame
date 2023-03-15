@@ -107,11 +107,19 @@ public class BombermanGame extends Application {
                 }
                 else if (_map[j][i] == '1') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Balloon(i, j, Sprite.balloom_left1.getFxImage()));
+                    entities.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
                 }
                 else if (_map[j][i] == '2') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     entities.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
+                }
+                else if (_map[j][i] == '3') {
+                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    entities.add(new Doll(i, j, Sprite.doll_left1.getFxImage()));
+                }
+                else if (_map[j][i] == '4') {
+                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    entities.add(new Kondoria(i, j, Sprite.kondoria_left1.getFxImage()));
                 }
                 else if (_map[j][i] == 'b') {
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
