@@ -8,7 +8,7 @@ public class Map {
     private int level, rows, cols;
     public void loadMap(){
         try {
-            FileReader file = new FileReader("D:\\Intelij\\BoombermanGame\\res\\levels\\Level1.txt");
+            FileReader file = new FileReader("res\\levels\\Level1.txt");
             BufferedReader bufferReader = new BufferedReader(file);
             String s = bufferReader.readLine();
             String[] l = s.split(" ");
