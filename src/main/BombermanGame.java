@@ -28,6 +28,7 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> items = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -123,22 +124,22 @@ public class BombermanGame extends Application {
                 }
                 else if (_map[j][i] == 'b') {
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                    stillObjects.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
+                    items.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
                 }
                 else if (_map[j][i] == 'f') {
-                    stillObjects.add(new FlameItem(i, j, Sprite.powerup_flames.getFxImage()));
+                    items.add(new FlameItem(i, j, Sprite.powerup_flames.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                 }
                 else if (_map[j][i] == 's') {
-                    stillObjects.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
+                    items.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                 }
                 else if (_map[j][i] == 'm') {
-                    stillObjects.add(new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage()));
+                    items.add(new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                 }
                 else if (_map[j][i] == 'w') {
-                    stillObjects.add(new WallPass(i, j, Sprite.powerup_wallpass.getFxImage()));
+                    items.add(new WallPass(i, j, Sprite.powerup_wallpass.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                 }
                 else {
@@ -155,6 +156,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
