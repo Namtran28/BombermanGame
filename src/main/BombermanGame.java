@@ -18,26 +18,29 @@ import graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
+import playerInputs.KeyHandler;
 
 public class BombermanGame extends Application {
 
     public static /*final*/ int WIDTH;
     public static /*final*/ int HEIGHT;
-    
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
+    private KeyHandler keyHandler;
 
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
-    @Override
-    public void start(Stage stage) {
-        createMap();
+    public void load(Stage stage, int level) {
+        Map map = new Map(level);
+        this.HEIGHT = map.getRows();
+        this.WIDTH = map.getCols();
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -48,8 +51,14 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
+        keyHandler = new KeyHandler(scene);
+        map.createMap(keyHandler);
+        this.items = map.getItems();
+        this.stillObjects = map.getStillObjects();
+        this.entities = map.getEntities();
 
         // Add scene vao stage
+        stage.setTitle("Bomberman");
         stage.setScene(scene);
         Image icon = new Image("/Mew.jpg");
         stage.getIcons().add(icon);
@@ -60,7 +69,7 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                update(scene);
             }
         };
         timer.start();
@@ -68,18 +77,25 @@ public class BombermanGame extends Application {
         /*Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);*/
     }
-
-    public void createMap() {
-        Map map = new Map();
-        this.items = map.getItems();
-        this.stillObjects = map.getStillObjects();
-        this.entities = map.getEntities();
-        this.HEIGHT = map.getHEIGHT();
-        this.WIDTH = map.getWIDTH();
+    @Override
+    public void start(Stage stage) {
+        load(stage, 2);
     }
 
-    public void update() {
-        entities.forEach(Entity::update);
+//    public void createMap(int level) {
+//        Map map = new Map(level);
+//        map.createMap(keyHandler);
+//        this.items = map.getItems();
+//        this.stillObjects = map.getStillObjects();
+//        this.entities = map.getEntities();
+//        this.HEIGHT = map.getRows();
+//        this.WIDTH = map.getCols();
+//    }
+
+    public void update(Scene scene) {
+        for (Entity entity : entities) {
+            entity.update(scene);
+        }
     }
 
     public void render() {

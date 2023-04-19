@@ -12,6 +12,9 @@ import entities.tiles.Grass;
 import entities.tiles.Portal;
 import entities.tiles.Wall;
 import graphics.Sprite;
+import javafx.scene.Scene;
+import playerInputs.KeyHandler;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -24,12 +27,12 @@ public class Map {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
-    public static /*final*/ int WIDTH;
-    public static /*final*/ int HEIGHT;
+//    public static /*final*/ int WIDTH;
+//    public static /*final*/ int HEIGHT;
 
-    public void loadMap() {
+    public void readMap(int level) {
         try {
-            FileReader file = new FileReader("res\\levels\\Level1.txt");
+            FileReader file = new FileReader("res\\levels\\Level" + level +".txt");
             BufferedReader bufferReader = new BufferedReader(file);
             String s = bufferReader.readLine();
             String[] l = s.split(" ");
@@ -45,58 +48,61 @@ public class Map {
                     map[i][j] = s.charAt(j);
                 }
             }
+
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
     }
 
-    public void createMap() {
+    public void createMap(KeyHandler keyHandler) {
         //Map map = new Map();
-        int level = this.getLevel();
-        HEIGHT = this.getRows();
-        WIDTH = this.getCols();
-        char[][] _map = this.getMap();
-
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+//        int level = this.getLevel();
+//        HEIGHT = this.getRows();
+//        WIDTH = this.getCols();
+//        char[][] _map = this.getMap();
+        int xp = 0, yp = 0;
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
                 //Entity object;
-                if (_map[j][i] == '#') {
+                if (map[j][i] == '#') {
                     stillObjects.add(new Wall(i, j, Sprite.wall.getFxImage()));
-                } else if (_map[j][i] == '*') {
+                } else if (map[j][i] == '*') {
                     stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else if (_map[j][i] == 'x') {
+                } else if (map[j][i] == 'x') {
                     stillObjects.add(new Portal(i, j, Sprite.portal.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else if (_map[j][i] == 'p') {
+                } else if (map[j][i] == 'p') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     //stillObjects.add(object);
-                    entities.add(new Bomber(i, j, Sprite.player_right.getFxImage()));
-                } else if (_map[j][i] == '1') {
+                    //entities.add(new Bomber(i, j, Sprite.player_right.getFxImage()));
+                    xp = i;
+                    yp = j;
+                } else if (map[j][i] == '1') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     entities.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
-                } else if (_map[j][i] == '2') {
+                } else if (map[j][i] == '2') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     entities.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
-                } else if (_map[j][i] == '3') {
+                } else if (map[j][i] == '3') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     entities.add(new Doll(i, j, Sprite.doll_left1.getFxImage()));
-                } else if (_map[j][i] == '4') {
+                } else if (map[j][i] == '4') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     entities.add(new Kondoria(i, j, Sprite.kondoria_left1.getFxImage()));
-                } else if (_map[j][i] == 'b') {
+                } else if (map[j][i] == 'b') {
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                     items.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
-                } else if (_map[j][i] == 'f') {
+                } else if (map[j][i] == 'f') {
                     items.add(new FlameItem(i, j, Sprite.powerup_flames.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else if (_map[j][i] == 's') {
+                } else if (map[j][i] == 's') {
                     items.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else if (_map[j][i] == 'm') {
+                } else if (map[j][i] == 'm') {
                     items.add(new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else if (_map[j][i] == 'w') {
+                } else if (map[j][i] == 'w') {
                     items.add(new WallPass(i, j, Sprite.powerup_wallpass.getFxImage()));
                     entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
                 } else {
@@ -105,12 +111,12 @@ public class Map {
                 //stillObjects.add(object);
             }
         }
+        entities.add(new Bomber(xp, yp, Sprite.player_right.getFxImage(), keyHandler));
     }
 
 
-    public Map() {
-        loadMap();
-        createMap();
+    public Map(int level) {
+        readMap(level);
     }
 
     public char[][] getMap() {
@@ -125,13 +131,13 @@ public class Map {
         return rows;
     }
 
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public static int getWIDTH() {
-        return WIDTH;
-    }
+//    public static int getHEIGHT() {
+//        return HEIGHT;
+//    }
+//
+//    public static int getWIDTH() {
+//        return WIDTH;
+//    }
 
     public int getCols() {
         return cols;

@@ -1,5 +1,6 @@
 package entities.items;
 
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
 public class FlameItem extends Item {
@@ -8,7 +9,7 @@ public class FlameItem extends Item {
     }
 
     @Override
-    public void update() {
+    public void update(Scene scene) {
 
     }
 }

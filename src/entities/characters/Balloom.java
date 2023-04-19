@@ -1,5 +1,6 @@
 package entities.characters;
 
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
 public class Balloom extends Enemy {
@@ -7,7 +8,7 @@ public class Balloom extends Enemy {
         super( x, y, img);
     }
     @Override
-    public void update() {
+    public void update(Scene scene) {
 
     }
 }
