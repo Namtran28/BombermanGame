@@ -70,84 +70,12 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        /*for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
-            }
-        }*/
         Map map = new Map();
-        int level = map.getLevel();
-        HEIGHT = map.getRows();
-        WIDTH = map.getCols();
-        char[][] _map = map.getMap();
-
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                //Entity object;
-                if (_map[j][i] == '#') {
-                    stillObjects.add(new Wall(i, j, Sprite.wall.getFxImage()));
-                }
-                else if (_map[j][i] == '*') {
-                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else if (_map[j][i] == 'x') {
-                    stillObjects.add(new Portal(i, j, Sprite.portal.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else if (_map[j][i] == 'p') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    //stillObjects.add(object);
-                    entities.add(new Bomber(i, j, Sprite.player_right.getFxImage()));
-                }
-                else if (_map[j][i] == '1') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
-                }
-                else if (_map[j][i] == '2') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
-                }
-                else if (_map[j][i] == '3') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Doll(i, j, Sprite.doll_left1.getFxImage()));
-                }
-                else if (_map[j][i] == '4') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Kondoria(i, j, Sprite.kondoria_left1.getFxImage()));
-                }
-                else if (_map[j][i] == 'b') {
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                    items.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
-                }
-                else if (_map[j][i] == 'f') {
-                    items.add(new FlameItem(i, j, Sprite.powerup_flames.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else if (_map[j][i] == 's') {
-                    items.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else if (_map[j][i] == 'm') {
-                    items.add(new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else if (_map[j][i] == 'w') {
-                    items.add(new WallPass(i, j, Sprite.powerup_wallpass.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                }
-                else {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                }
-                //stillObjects.add(object);
-            }
-        }
+        this.items = map.getItems();
+        this.stillObjects = map.getStillObjects();
+        this.entities = map.getEntities();
+        this.HEIGHT = map.getHEIGHT();
+        this.WIDTH = map.getWIDTH();
     }
 
     public void update() {
