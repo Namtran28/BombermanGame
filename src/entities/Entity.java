@@ -19,6 +19,7 @@ public abstract class Entity {
     protected boolean goUp, goDown, goLeft, goRight;
 
     protected Image img;
+    protected char direction;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {

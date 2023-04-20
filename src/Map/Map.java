@@ -1,20 +1,14 @@
 package Map;
 
 import entities.Entity;
-import entities.characters.Balloom;
-import entities.characters.Doll;
-import entities.characters.Kondoria;
-import entities.characters.Oneal;
+import entities.characters.*;
 import entities.items.*;
 import entities.player.Bomber;
-import entities.tiles.Brick;
-import entities.tiles.Grass;
-import entities.tiles.Portal;
-import entities.tiles.Wall;
+import entities.tiles.*;
 import graphics.Sprite;
 import javafx.scene.Scene;
 import playerInputs.KeyHandler;
-
+import main.BombermanGame;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -27,18 +21,27 @@ public class Map {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
+    private List<Entity> backGround = new ArrayList<>();
+
+    private Entity item;
+    private Entity object;
+    private Entity enemy;
+
+    private Entity player;
+
+
 //    public static /*final*/ int WIDTH;
 //    public static /*final*/ int HEIGHT;
 
     public void readMap(int level) {
         try {
-            FileReader file = new FileReader("res\\levels\\Level" + level +".txt");
+            FileReader file = new FileReader("res\\levels\\Level" + level + ".txt");
             BufferedReader bufferReader = new BufferedReader(file);
             String s = bufferReader.readLine();
             String[] l = s.split(" ");
-            level = Integer.parseInt(l[0]);
-            rows = Integer.parseInt(l[1]);
-            cols = Integer.parseInt(l[2]);
+            this.level = Integer.parseInt(l[0]);
+            this.rows = Integer.parseInt(l[1]);
+            this.cols = Integer.parseInt(l[2]);
 
             map = new char[rows][cols];
 
@@ -55,65 +58,63 @@ public class Map {
         }
     }
 
+    public List<Entity> getBackGround() {
+        return backGround;
+    }
+
     public void createMap(KeyHandler keyHandler) {
         //Map map = new Map();
 //        int level = this.getLevel();
 //        HEIGHT = this.getRows();
 //        WIDTH = this.getCols();
 //        char[][] _map = this.getMap();
-        int xp = 0, yp = 0;
+        //int xp = 0, yp = 0;
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
+                item = null;
+                enemy = null;
+                object = null;
                 //Entity object;
                 if (map[j][i] == '#') {
-                    stillObjects.add(new Wall(i, j, Sprite.wall.getFxImage()));
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
                 } else if (map[j][i] == '*') {
-                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
                 } else if (map[j][i] == 'x') {
-                    stillObjects.add(new Portal(i, j, Sprite.portal.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    //stillObjects.add(object);
-                    //entities.add(new Bomber(i, j, Sprite.player_right.getFxImage()));
-                    xp = i;
-                    yp = j;
+                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), keyHandler);
                 } else if (map[j][i] == '1') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
+                    enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage());
                 } else if (map[j][i] == '2') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
+                    enemy = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
                 } else if (map[j][i] == '3') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Doll(i, j, Sprite.doll_left1.getFxImage()));
+                    enemy = new Doll(i, j, Sprite.doll_left1.getFxImage());
                 } else if (map[j][i] == '4') {
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    entities.add(new Kondoria(i, j, Sprite.kondoria_left1.getFxImage()));
+                    enemy = new Kondoria(i, j, Sprite.kondoria_left1.getFxImage());
                 } else if (map[j][i] == 'b') {
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                    items.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
+                    item = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
                 } else if (map[j][i] == 'f') {
-                    items.add(new FlameItem(i, j, Sprite.powerup_flames.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    item = new FlameItem(i, j, Sprite.powerup_flames.getFxImage());
                 } else if (map[j][i] == 's') {
-                    items.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    item = new SpeedItem(i, j, Sprite.powerup_speed.getFxImage());
                 } else if (map[j][i] == 'm') {
-                    items.add(new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    item = new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage());
                 } else if (map[j][i] == 'w') {
-                    items.add(new WallPass(i, j, Sprite.powerup_wallpass.getFxImage()));
-                    entities.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                } else {
+                    item = new WallPass(i, j, Sprite.powerup_wallpass.getFxImage());
+                }
+                backGround.add(new Grass(i, j, Sprite.grass.getFxImage()));
+
+                if (!(enemy == null)) {
+                    entities.add(enemy);
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                 }
-                //stillObjects.add(object);
+                if (!(object == null)) {
+                    stillObjects.add(object);
+                }
             }
         }
-        entities.add(new Bomber(xp, yp, Sprite.player_right.getFxImage(), keyHandler));
+        entities.add(player);
     }
-
 
     public Map(int level) {
         readMap(level);

@@ -18,6 +18,7 @@ import graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import playerInputs.KeyHandler;
 
 public class BombermanGame extends Application {
@@ -30,8 +31,8 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
+    private List<Entity> backGround = new ArrayList<>();
     private KeyHandler keyHandler;
-
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -56,6 +57,7 @@ public class BombermanGame extends Application {
         this.items = map.getItems();
         this.stillObjects = map.getStillObjects();
         this.entities = map.getEntities();
+        this.backGround = map.getBackGround();
 
         // Add scene vao stage
         stage.setTitle("Bomberman");
@@ -77,6 +79,7 @@ public class BombermanGame extends Application {
         /*Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);*/
     }
+
     @Override
     public void start(Stage stage) {
         load(stage, 2);
@@ -100,6 +103,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        backGround.forEach((g->g.render(gc)));
         items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
