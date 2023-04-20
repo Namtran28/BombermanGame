@@ -33,7 +33,7 @@ public class BombermanGame extends Application {
     private List<Entity> items = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
     private KeyHandler keyHandler;
-    private static char[][] table;
+    private static Entity[][] table;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -115,8 +115,11 @@ public class BombermanGame extends Application {
         return keyHandler;
     }
 
-    public static char[][] getTable() {
+    public static Entity[][] getTable() {
         return table;
     }
 
+    public static void setTable(int px, int py, Entity entity) {
+        table[px][py] = entity;
+    }
 }

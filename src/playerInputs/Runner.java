@@ -14,13 +14,13 @@ public class Runner extends Application {
 
     @Override
     public void start(Stage stage) {
-        Map map = new Map(1);
+        Map map = new Map(2);
         Group group = new Group();
         Scene scene = new Scene(group);
         map.createMap(new KeyHandler(scene));
-        for (int i = 0; i < map.getRows() * Sprite.SCALED_SIZE; i++) {
-            for (int j = 0; j < map.getCols() * Sprite.SCALED_SIZE; j++) {
-                System.out.print(map.getTable()[i][j] + " ");
+        for (int i = 0; i < map.getRows(); i++) {
+            for (int j = 0; j < map.getCols(); j++) {
+                System.out.print(map.getTable()[i][j].getClass().getName() + "<--->");
             }
             System.out.println();
         }

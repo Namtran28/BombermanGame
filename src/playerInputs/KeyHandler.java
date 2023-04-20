@@ -31,4 +31,6 @@ public class KeyHandler implements EventHandler<KeyEvent> {
     public boolean isPressed(KeyCode keyCode) {
         return keyCodes.contains(keyCode);
     }
+
+    public boolean isReleased() {return keyCodes.size() == 0;}
 }
