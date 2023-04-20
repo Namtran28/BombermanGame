@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import graphics.Sprite;
 import main.BombermanGame;
 
+import javax.swing.*;
+
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
@@ -29,14 +31,16 @@ public abstract class Entity {
     }
 
     public static boolean checkWall(int x, int y) {
-        if (x < Sprite.SCALED_SIZE || y < Sprite.SCALED_SIZE || x > Sprite.SCALED_SIZE * (BombermanGame.WIDTH - 1) || y > Sprite.SCALED_SIZE * (BombermanGame.HEIGHT - 1)) {
-            return false;
-        }
-
-        x /= Sprite.SCALED_SIZE;
-        y /= Sprite.SCALED_SIZE;
+//        if (x < Sprite.SCALED_SIZE || y < Sprite.SCALED_SIZE || x > Sprite.SCALED_SIZE * (BombermanGame.WIDTH - 1) || y > Sprite.SCALED_SIZE * (BombermanGame.HEIGHT - 1)) {
+//            return false;
+//        }
+//
+//        x /= Sprite.SCALED_SIZE;
+//        y /= Sprite.SCALED_SIZE;
 //        Entity cur = getEntity(x, y);
 //        return !(cur instanceof Wall) && !(cur instanceof Brick) && !(cur instanceof Bomb);
+        char c = BombermanGame.getTable()[x][y];
+        if (c == '#' || c == '*') return false;
         return true;
     }
 

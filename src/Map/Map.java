@@ -22,6 +22,7 @@ public class Map {
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
+    private char[][] table;
 
     private Entity item;
     private Entity object;
@@ -68,7 +69,8 @@ public class Map {
 //        HEIGHT = this.getRows();
 //        WIDTH = this.getCols();
 //        char[][] _map = this.getMap();
-        //int xp = 0, yp = 0;
+        int xp = 0, yp = 0;
+        table = new char[(cols + 1) * Sprite.SCALED_SIZE][(rows + 1) * Sprite.SCALED_SIZE];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 item = null;
@@ -82,6 +84,7 @@ public class Map {
                 } else if (map[j][i] == 'x') {
                     item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
+                    xp = i; yp = j;
                     player = new Bomber(i, j, Sprite.player_right.getFxImage(), keyHandler);
                 } else if (map[j][i] == '1') {
                     enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage());
@@ -101,19 +104,29 @@ public class Map {
                     item = new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage());
                 } else if (map[j][i] == 'w') {
                     item = new WallPass(i, j, Sprite.powerup_wallpass.getFxImage());
+                } else {
+                    draw(i, j, map[j][i]);
                 }
                 backGround.add(new Grass(i, j, Sprite.grass.getFxImage()));
 
                 if (!(enemy == null)) {
                     entities.add(enemy);
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    draw(i, j, map[j][i]);
                 }
                 if (!(object == null)) {
                     stillObjects.add(object);
+                    draw(i, j, map[j][i]);
+                }
+                if (!(item == null)) {
+                    items.add(item);
+                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    draw(i, j, '*');
                 }
             }
         }
         entities.add(player);
+        draw(xp, yp, map[yp][xp]);
     }
 
     public Map(int level) {
@@ -140,6 +153,10 @@ public class Map {
 //        return WIDTH;
 //    }
 
+    public char[][] getTable() {
+        return table;
+    }
+
     public int getCols() {
         return cols;
     }
@@ -154,5 +171,13 @@ public class Map {
 
     public List<Entity> getItems() {
         return items;
+    }
+
+    private void draw(int x, int y, char c) {
+        for (int i = x * Sprite.SCALED_SIZE; i < (x + 1) * Sprite.SCALED_SIZE; i++) {
+            for (int j = y * Sprite.SCALED_SIZE; j < (y + 1) * Sprite.SCALED_SIZE; j++) {
+                table[i][j] = c;
+            }
+        }
     }
 }
