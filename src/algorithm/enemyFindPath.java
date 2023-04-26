@@ -34,7 +34,7 @@ public class enemyFindPath {
     }
 
     private static void bfs(int x, int y) {
-        if ((_table[x][y] instanceof Brick || _table[x][y] instanceof Wall) &&
+        if ((_table[x][y] instanceof Brick || _table[x][y] instanceof Wall) ||
                 visited[x][y]) return;
         Queue<Pair<Integer, Integer>>  queue = new LinkedList<>();
         queue.add(new Pair<>(x, y));
@@ -64,10 +64,10 @@ public class enemyFindPath {
             int py = BombermanGame.player.getXUnit();
             int px = BombermanGame.player.getYUnit();
             while (px != x && py != y) {
-                nextStep = new Pair<>(px, py);
                 int tmp = px;
                 px = pathTo[tmp][py].getKey();
                 py = pathTo[tmp][py].getValue();
+                nextStep = new Pair<>(px, py);
             }
         } catch (Exception e) {
 //            int id = new Random().nextInt(4);
@@ -90,19 +90,25 @@ public class enemyFindPath {
             bfs(x, y);
             int py = BombermanGame.player.getXUnit();
             int px = BombermanGame.player.getYUnit();
+            if (!visited[px][py]) {
+                return nextStep;
+            }
+            nextStep = new Pair<>(px, py);
             while (px != x && py != y) {
-                nextStep = new Pair<>(px, py);
+                //nextStep = new Pair<>(px, py);
                 int tmp = px;
                 px = pathTo[tmp][py].getKey();
                 py = pathTo[tmp][py].getValue();
+                nextStep = new Pair<>(px, py);
             }
         } catch (Exception e) {
-            int id = new Random().nextInt(4);
-            //System.out.println("Exception " + id + " " + x + " " + y + " " + BombermanGame.getTable()[x][y].getClass().getName() + " " + visited[x][y]);
-            if (!(BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Brick || BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Wall)) {
-                nextStep = new Pair<>(x + dx[id], y + dy[id]);
-            }
+//            int id = new Random().nextInt(4);
+//            //System.out.println("Exception " + id + " " + x + " " + y + " " + BombermanGame.getTable()[x][y].getClass().getName() + " " + visited[x][y]);
+//            if (!(BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Brick || BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Wall)) {
+//                nextStep = new Pair<>(x + dx[id], y + dy[id]);
+//            }
         }
+        //System.out.println(nextStep.getKey() + " " + nextStep.getValue());
         return nextStep;
     }
 }

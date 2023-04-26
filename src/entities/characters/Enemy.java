@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 public class Enemy extends Entity {
-    protected char direction = 'L';
+    protected char direction = ' ';
     public Enemy(int x, int y, Image img, int life) {
         super( x, y, img);
         this.life = life;
@@ -35,7 +35,6 @@ public class Enemy extends Entity {
             if (dx > this.getXUnit()) direction = 'R';
             if (dy < this.getYUnit()) direction = 'U';
             if (dy > this.getYUnit()) direction = 'D';
-            move = true;
         //}
     }
 
