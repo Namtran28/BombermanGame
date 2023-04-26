@@ -1,8 +1,7 @@
 package main;
 
 import Map.Map;
-import entities.characters.*;
-import entities.items.*;
+import entities.player.Bomber;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -11,9 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import entities.player.Bomber;
 import entities.Entity;
-import entities.tiles.*;
 import graphics.Sprite;
 
 import java.util.ArrayList;
@@ -28,12 +25,13 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
+    private static List<Entity> enemies = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
     private KeyHandler keyHandler;
     private static Entity[][] table;
+    public static Entity player;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -41,8 +39,8 @@ public class BombermanGame extends Application {
 
     public void load(Stage stage, int level) {
         Map map = new Map(level);
-        this.HEIGHT = map.getRows();
-        this.WIDTH = map.getCols();
+        HEIGHT = map.getRows();
+        WIDTH = map.getCols();
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -55,11 +53,12 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
         keyHandler = new KeyHandler(scene);
         map.createMap(keyHandler);
-        this.items = map.getItems();
-        this.stillObjects = map.getStillObjects();
-        this.entities = map.getEntities();
-        this.backGround = map.getBackGround();
-        this.table = map.getTable();
+        items = map.getItems();
+        stillObjects = map.getStillObjects();
+        enemies = map.getEntities();
+        backGround = map.getBackGround();
+        table = map.getTable();
+        player = map.getPlayer();
 
         // Add scene vao stage
         stage.setTitle("Bomberman");
@@ -77,9 +76,6 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-
-        /*Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);*/
     }
 
     @Override
@@ -87,19 +83,13 @@ public class BombermanGame extends Application {
         load(stage, 2);
     }
 
-//    public void createMap(int level) {
-//        Map map = new Map(level);
-//        map.createMap(keyHandler);
-//        this.items = map.getItems();
-//        this.stillObjects = map.getStillObjects();
-//        this.entities = map.getEntities();
-//        this.HEIGHT = map.getRows();
-//        this.WIDTH = map.getCols();
-//    }
-
     public void update(Scene scene) {
-        for (Entity entity : entities) {
-            entity.update(scene);
+        player.update(scene);
+        for (Entity enemy : enemies) {
+            enemy.update(scene);
+        }
+        for (Entity item : items) {
+            item.update(scene);
         }
     }
 
@@ -108,11 +98,8 @@ public class BombermanGame extends Application {
         backGround.forEach((g->g.render(gc)));
         items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
-    }
-
-    public KeyHandler getKeyHandler() {
-        return keyHandler;
+        enemies.forEach(g -> g.render(gc));
+        player.render(gc);
     }
 
     public static Entity[][] getTable() {
@@ -121,5 +108,9 @@ public class BombermanGame extends Application {
 
     public static void setTable(int px, int py, Entity entity) {
         table[px][py] = entity;
+    }
+
+    public static List<Entity> getEnemies() {
+        return enemies;
     }
 }

@@ -15,10 +15,11 @@ import java.util.List;
 public class Map {
     private char[][] map;
     private int rows, cols;
-    private final List<Entity> entities = new ArrayList<>();
-    private final List<Entity> stillObjects = new ArrayList<>();
-    private final List<Entity> items = new ArrayList<>();
-    private final List<Entity> backGround = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> items = new ArrayList<>();
+    private List<Entity> backGround = new ArrayList<>();
+    private Entity player = new Bomber();
     private Entity[][] table;
 
 
@@ -54,7 +55,6 @@ public class Map {
         Entity item;
         Entity object;
         Entity enemy;
-        Entity player = null;
         int xp = 0, yp = 0;
         table = new Entity[rows][cols];
         for (int i = 0; i < cols; i++) {
@@ -70,16 +70,16 @@ public class Map {
                 } else if (map[j][i] == 'x') {
                     item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
-                    xp = i; yp = j;
-                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), keyHandler);
+                    table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
+                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), 3, keyHandler);
                 } else if (map[j][i] == '1') {
-                    enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage());
+                    enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage(), 1);
                 } else if (map[j][i] == '2') {
-                    enemy = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
+                    enemy = new Oneal(i, j, Sprite.oneal_left1.getFxImage(), 1);
                 } else if (map[j][i] == '3') {
-                    enemy = new Doll(i, j, Sprite.doll_left1.getFxImage());
+                    enemy = new Doll(i, j, Sprite.doll_left1.getFxImage(), 2);
                 } else if (map[j][i] == '4') {
-                    enemy = new Kondoria(i, j, Sprite.kondoria_left1.getFxImage());
+                    enemy = new Kondoria(i, j, Sprite.kondoria_left1.getFxImage(), 1);
                 } else if (map[j][i] == 'b') {
                     item = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
                 } else if (map[j][i] == 'f') {
@@ -98,7 +98,7 @@ public class Map {
                 if (!(enemy == null)) {
                     entities.add(enemy);
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    table[j][i] = enemy;
+                    table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 if (!(object == null)) {
                     stillObjects.add(object);
@@ -111,8 +111,6 @@ public class Map {
                 }
             }
         }
-        entities.add(player);
-        table[yp][xp] = player;
     }
 
     public Map(int level) {
@@ -143,13 +141,7 @@ public class Map {
         return items;
     }
 
-    /*
-     * private void draw(int x, int y, char c) {
-     *         for (int i = x * Sprite.SCALED_SIZE; i < (x + 1) * Sprite.SCALED_SIZE; i++) {
-     *             for (int j = y * Sprite.SCALED_SIZE; j < (y + 1) * Sprite.SCALED_SIZE; j++) {
-     *                 table[i][j] = c;
-     *             }
-     *         }
-     *     }
-     */
+    public Entity getPlayer() {
+        return player;
+    }
 }
