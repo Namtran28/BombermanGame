@@ -42,7 +42,7 @@ public class Kondoria extends Enemy {
     }
 
     public  void moving() {
-        chooseDirection();
+        chooseDirectionRandom();
         if (direction == 'D') {
             if (checkWall(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkWall(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
                 y++;

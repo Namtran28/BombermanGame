@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import entities.Entity;
 import algorithm.enemyFindPath;
 import javafx.util.Pair;
+import main.BombermanGame;
 
 import java.util.Random;
 
@@ -16,6 +17,13 @@ public class Enemy extends Entity {
         super( x, y, img);
         this.life = life;
         died = false;
+    }
+
+    protected void chooseDirectionRandom() {
+        if (animate > 100000) animate = 0;
+        if (animate % 30 == 0) {
+            direction = directions[new Random().nextInt(4)];
+        }
     }
 
     @Override
