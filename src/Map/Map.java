@@ -6,9 +6,7 @@ import entities.items.*;
 import entities.player.Bomber;
 import entities.tiles.*;
 import graphics.Sprite;
-import javafx.scene.Scene;
 import playerInputs.KeyHandler;
-import main.BombermanGame;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -16,22 +14,13 @@ import java.util.List;
 
 public class Map {
     private char[][] map;
-    private int level, rows, cols;
+    private int rows, cols;
+    private final List<Entity> entities = new ArrayList<>();
+    private final List<Entity> stillObjects = new ArrayList<>();
+    private final List<Entity> items = new ArrayList<>();
+    private final List<Entity> backGround = new ArrayList<>();
+    private Entity[][] table;
 
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-    private List<Entity> items = new ArrayList<>();
-    private List<Entity> backGround = new ArrayList<>();
-
-    private Entity item;
-    private Entity object;
-    private Entity enemy;
-
-    private Entity player;
-
-
-//    public static /*final*/ int WIDTH;
-//    public static /*final*/ int HEIGHT;
 
     public void readMap(int level) {
         try {
@@ -39,7 +28,6 @@ public class Map {
             BufferedReader bufferReader = new BufferedReader(file);
             String s = bufferReader.readLine();
             String[] l = s.split(" ");
-            this.level = Integer.parseInt(l[0]);
             this.rows = Integer.parseInt(l[1]);
             this.cols = Integer.parseInt(l[2]);
 
@@ -63,12 +51,12 @@ public class Map {
     }
 
     public void createMap(KeyHandler keyHandler) {
-        //Map map = new Map();
-//        int level = this.getLevel();
-//        HEIGHT = this.getRows();
-//        WIDTH = this.getCols();
-//        char[][] _map = this.getMap();
-        //int xp = 0, yp = 0;
+        Entity item;
+        Entity object;
+        Entity enemy;
+        Entity player = null;
+        int xp = 0, yp = 0;
+        table = new Entity[rows][cols];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 item = null;
@@ -82,6 +70,7 @@ public class Map {
                 } else if (map[j][i] == 'x') {
                     item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
+                    xp = i; yp = j;
                     player = new Bomber(i, j, Sprite.player_right.getFxImage(), keyHandler);
                 } else if (map[j][i] == '1') {
                     enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage());
@@ -101,44 +90,42 @@ public class Map {
                     item = new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage());
                 } else if (map[j][i] == 'w') {
                     item = new WallPass(i, j, Sprite.powerup_wallpass.getFxImage());
+                } else {
+                    table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 backGround.add(new Grass(i, j, Sprite.grass.getFxImage()));
 
                 if (!(enemy == null)) {
                     entities.add(enemy);
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    table[j][i] = enemy;
                 }
                 if (!(object == null)) {
                     stillObjects.add(object);
+                    table[j][i] = object;
+                }
+                if (!(item == null)) {
+                    items.add(item);
+                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
+                    table[j][i] = new Brick(i, j, Sprite.brick.getFxImage());
                 }
             }
         }
         entities.add(player);
+        table[yp][xp] = player;
     }
 
     public Map(int level) {
         readMap(level);
     }
 
-    public char[][] getMap() {
-        return map;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
     public int getRows() {
         return rows;
     }
 
-//    public static int getHEIGHT() {
-//        return HEIGHT;
-//    }
-//
-//    public static int getWIDTH() {
-//        return WIDTH;
-//    }
+    public Entity[][] getTable() {
+        return table;
+    }
 
     public int getCols() {
         return cols;
@@ -155,4 +142,14 @@ public class Map {
     public List<Entity> getItems() {
         return items;
     }
+
+    /*
+     * private void draw(int x, int y, char c) {
+     *         for (int i = x * Sprite.SCALED_SIZE; i < (x + 1) * Sprite.SCALED_SIZE; i++) {
+     *             for (int j = y * Sprite.SCALED_SIZE; j < (y + 1) * Sprite.SCALED_SIZE; j++) {
+     *                 table[i][j] = c;
+     *             }
+     *         }
+     *     }
+     */
 }

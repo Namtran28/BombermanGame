@@ -33,6 +33,7 @@ public class BombermanGame extends Application {
     private List<Entity> items = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
     private KeyHandler keyHandler;
+    private static Entity[][] table;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -58,6 +59,7 @@ public class BombermanGame extends Application {
         this.stillObjects = map.getStillObjects();
         this.entities = map.getEntities();
         this.backGround = map.getBackGround();
+        this.table = map.getTable();
 
         // Add scene vao stage
         stage.setTitle("Bomberman");
@@ -107,5 +109,17 @@ public class BombermanGame extends Application {
         items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public KeyHandler getKeyHandler() {
+        return keyHandler;
+    }
+
+    public static Entity[][] getTable() {
+        return table;
+    }
+
+    public static void setTable(int px, int py, Entity entity) {
+        table[px][py] = entity;
     }
 }
