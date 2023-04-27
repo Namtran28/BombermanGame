@@ -1,6 +1,8 @@
 package entities.player;
 
 import entities.bombs.Bomb;
+import entities.tiles.Brick;
+import entities.tiles.Wall;
 import graphics.Sprite;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -17,7 +19,8 @@ public class Bomber extends Entity {
     private boolean flamePass = false;
     private boolean speedItem = false;
     private boolean wallPass = false;
-    private int bombCounter = 1;
+    private static int bombCounter = 1;
+    public static Entity bomb;
 
     public Bomber() {
     }
@@ -101,19 +104,19 @@ public class Bomber extends Entity {
                     keyHandler.isPressed(KeyCode.D) || keyHandler.isPressed(KeyCode.RIGHT)) {
                 return;
             }
-            if (checkWall(x - 2, y + 4) && checkWall(x - 2, y + Sprite.SCALED_SIZE - 4)) {
-                x -= 2;
+            if (checkWall(x - STEP, y + 4) && checkWall(x - STEP, y + Sprite.SCALED_SIZE - 4)) {
+                x -= STEP;
                 move = true;
                 direction = 'L';
             }
             //
-            if (!(checkWall(x - 2, y + 4))) {
+            if (!(checkWall(x - STEP, y + 4))) {
                 if ((double) ((y + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'D';
                     move = true;
                     y++;
                 }
-            } else if (!(checkWall(x - 2, y + Sprite.SCALED_SIZE - 4))) {
+            } else if (!(checkWall(x - STEP, y + Sprite.SCALED_SIZE - 4))) {
                 if ((double) ((y + Sprite.SCALED_SIZE - 4) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 4) / Sprite.SCALED_SIZE) + 0.5) {
                     direction = 'U';
                     move = true;
@@ -127,19 +130,19 @@ public class Bomber extends Entity {
                     keyHandler.isPressed(KeyCode.A) || keyHandler.isPressed(KeyCode.LEFT)) {
                 return;
             }
-            if (checkWall(x + Sprite.SCALED_SIZE + 2 - 5, y + 4) && checkWall(x + Sprite.SCALED_SIZE + 2 - 5, y + Sprite.SCALED_SIZE - 4)) {
-                x += 2;
+            if (checkWall(x + Sprite.SCALED_SIZE + STEP - 5, y + 4) && checkWall(x + Sprite.SCALED_SIZE + STEP - 5, y + Sprite.SCALED_SIZE - 4)) {
+                x += STEP;
                 move = true;
                 direction = 'R';
             }
             //
-            if (!(checkWall(x + Sprite.SCALED_SIZE + 2 - 5, y + 4))) {
+            if (!(checkWall(x + Sprite.SCALED_SIZE + STEP - 5, y + 4))) {
                 if ((double) ((y + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'D';
                     move = true;
                     y++;
                 }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE + 2 - 5, y + Sprite.SCALED_SIZE - 4))) {
+            } else if (!(checkWall(x + Sprite.SCALED_SIZE + STEP - 5, y + Sprite.SCALED_SIZE - 4))) {
                 if ((double) ((y + Sprite.SCALED_SIZE - 4) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 4) / Sprite.SCALED_SIZE) + 0.5) {
                     direction = 'U';
                     move = true;
@@ -152,19 +155,19 @@ public class Bomber extends Entity {
                     keyHandler.isPressed(KeyCode.D) || keyHandler.isPressed(KeyCode.RIGHT)) {
                 return;
             }
-            if (checkWall(x + 4, y - 2) && checkWall(x + Sprite.SCALED_SIZE - 5, y - 2)) {
-                y -= 2;
+            if (checkWall(x + 4, y - STEP) && checkWall(x + Sprite.SCALED_SIZE - 5, y - STEP)) {
+                y -= STEP;
                 move = true;
                 direction = 'U';
             }
             //
-            if (!(checkWall(x + 4, y - 2))) {
+            if (!(checkWall(x + 4, y - STEP))) {
                 if ((double) ((x + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'R';
                     move = true;
                     x++;
                 }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 5, y - 2))) {
+            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 5, y - STEP))) {
                 if ((double) ((x + Sprite.SCALED_SIZE - 5) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 5) / Sprite.SCALED_SIZE) + 0.5) {
                     direction = 'L';
                     move = true;
@@ -177,19 +180,19 @@ public class Bomber extends Entity {
                     keyHandler.isPressed(KeyCode.D) || keyHandler.isPressed(KeyCode.RIGHT)) {
                 return;
             }
-            if (checkWall(x + 4, y + Sprite.SCALED_SIZE + 2) && checkWall(x + Sprite.SCALED_SIZE - 5, y + Sprite.SCALED_SIZE + 2)) {
-                y += 2;
+            if (checkWall(x + 4, y + Sprite.SCALED_SIZE + STEP) && checkWall(x + Sprite.SCALED_SIZE - 5, y + Sprite.SCALED_SIZE + STEP)) {
+                y += STEP;
                 move = true;
                 direction = 'D';
             }
             //
-            if (!(checkWall(x + 4, y + Sprite.SCALED_SIZE + 2))) {
+            if (!(checkWall(x + 4, y + Sprite.SCALED_SIZE + STEP))) {
                 if ((double) ((x + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'R';
                     move = true;
                     x++;
                 }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 5, y + Sprite.SCALED_SIZE + 2))) {
+            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 5, y + Sprite.SCALED_SIZE + STEP))) {
                 if ((double) ((x + Sprite.SCALED_SIZE - 5) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 5) / Sprite.SCALED_SIZE) + 0.5) {
                     direction = 'L';
                     move = true;
@@ -236,6 +239,10 @@ public class Bomber extends Entity {
     }
 
     public boolean canSetBomb() {
+        if (BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Wall ||
+                BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Brick) {
+            return false;
+        }
         return bombCounter > 0;
     }
 
@@ -257,10 +264,14 @@ public class Bomber extends Entity {
 
     public void setBomb() {
         if (canSetBomb()) {
-            Entity bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), 2);
+            bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), 1);
             BombermanGame.addBomb(bomb);
             BombermanGame.setTable(getYUnit(), getXUnit(), bomb);
             bombCounter--;
         }
+    }
+
+    public void reduceBombCounter() {
+        this.bombCounter++;
     }
 }

@@ -1,6 +1,7 @@
 package entities.characters;
 
 import entities.bombs.Bomb;
+import entities.bombs.Flame;
 import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -44,6 +45,11 @@ public abstract class Enemy extends Entity {
 
     public void moving() {
         chooseDirectionRandom();
+//        if (this instanceof Oneal) {
+//            chooseDirection();
+//            chooseDirectionRandom();
+//        }
+//        BombermanGame.setTable(getYUnit(), getXUnit(), null);
         if (direction == 'D') {
             if (checkWall(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkWall(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
                 y++;
@@ -120,22 +126,13 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
+//        BombermanGame.setTable(getYUnit(), getXUnit(), this);
     }
 
-    public boolean checkDied() {
-        if (BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Bomb) {
-            beDamaged = true;
-            died = true;
-            return true;
-        }
-        return false;
-    }
     protected void gotHurt(Sprite sprite) {
         hurtTick++;
         img = sprite.getFxImage();
-        if (hurtTick == 20) {
-            hurtTick = 0;
-            beDamaged = false;
+        if (hurtTick >= 20) {
             Platform.runLater(() -> {
                 BombermanGame.removeEnemy(this);
             });
