@@ -1,6 +1,6 @@
 package entities.player;
 
-import entities.characters.Enemy;
+import entities.bombs.Bomb;
 import graphics.Sprite;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,7 +12,12 @@ import playerInputs.KeyHandler;
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
     private int unDeadTime = 0;
-    private int hurtTick = 0;
+    private boolean bomItem = false;
+    private boolean flameItem = false;
+    private boolean flamePass = false;
+    private boolean speedItem = false;
+    private boolean wallPass = false;
+    private int bombCounter = 1;
 
     public Bomber() {
     }
@@ -189,6 +194,9 @@ public class Bomber extends Entity {
                 }
             }
         }
+        if (keyHandler.isPressed(KeyCode.SPACE)) {
+            setBomb();
+        }
         int px = getXUnit();
         int py = getYUnit();
         if (beDamaged(px, py)) return;
@@ -221,5 +229,37 @@ public class Bomber extends Entity {
 
     public boolean isUnDead() {
         return unDeadTime > 0;
+    }
+
+    public boolean isBomItem() {
+        return bomItem;
+    }
+
+    public boolean canSetBomb() {
+        return bombCounter > 0;
+    }
+
+    public boolean isWallPass() {
+        return wallPass;
+    }
+
+    public boolean isSpeedItem() {
+        return speedItem;
+    }
+
+    public boolean isFlamePass() {
+        return flamePass;
+    }
+
+    public boolean isFlameItem() {
+        return flameItem;
+    }
+
+    public void setBomb() {
+        if (canSetBomb()) {
+            Entity bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage());
+            BombermanGame.addBomb(bomb);
+            BombermanGame.setTable(getYUnit(), getXUnit(), bomb);
+        }
     }
 }
