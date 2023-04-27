@@ -14,10 +14,12 @@ public abstract class Entity {
     protected int x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
+
+    protected Sprite sprite;
     protected boolean goUp, goDown, goLeft, goRight;
     protected Image img;
     protected char direction;
-    protected char[] directions = {'L','R','U','D'};
+    protected char[] directions = {'L','R','U','D','H','V'};
     protected boolean move = false;
     protected int animate = 0;
     protected int life;
