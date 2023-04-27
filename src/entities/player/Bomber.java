@@ -89,6 +89,9 @@ public class Bomber extends Entity {
         moving();
         chooseSprite();
         move = false;
+        if (keyHandler.isPressed(KeyCode.SPACE)) {
+            setBomb();
+        }
     }
 
     private void moving() {
@@ -194,9 +197,6 @@ public class Bomber extends Entity {
                 }
             }
         }
-        if (keyHandler.isPressed(KeyCode.SPACE)) {
-            setBomb();
-        }
         int px = getXUnit();
         int py = getYUnit();
         if (beDamaged(px, py)) return;
@@ -257,9 +257,10 @@ public class Bomber extends Entity {
 
     public void setBomb() {
         if (canSetBomb()) {
-            Entity bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage());
+            Entity bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), 2);
             BombermanGame.addBomb(bomb);
             BombermanGame.setTable(getYUnit(), getXUnit(), bomb);
+            bombCounter--;
         }
     }
 }

@@ -25,7 +25,7 @@ public abstract class Entity {
     protected int life;
     protected boolean died = false;
     protected boolean beDamaged = false;
-
+    protected int hurtTick = 0;
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
@@ -55,7 +55,7 @@ public abstract class Entity {
         x /= Sprite.SCALED_SIZE;
         y /= Sprite.SCALED_SIZE;
         Entity cur = getEntity(y, x);
-        return !(cur instanceof Wall) && !(cur instanceof Bomb);
+        return !(cur instanceof Wall)/* && !(cur instanceof Bomb)*/;
     }
 
     public void render(GraphicsContext gc) {

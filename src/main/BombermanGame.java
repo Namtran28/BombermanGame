@@ -120,4 +120,11 @@ public class BombermanGame extends Application {
     public static List<Entity> getEnemies() {
         return enemies;
     }
+
+    public static List<Entity> getStillObjects() {
+        return stillObjects;
+    }
+    public static void removeFlames(Entity flame) {
+        stillObjects.remove(flame);
+    }
 }

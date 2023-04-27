@@ -12,15 +12,15 @@ import main.BombermanGame;
 import java.util.List;
 
 public class Bomb extends Entity {
-    private int animation = 0;
     private final int size;
+//    private int animate = 0;
     private boolean exploded = false;
-    private final List<Entity> entities;
+//    private final List<Entity> entities;
 
-    public Bomb(int x, int y, Image img,List<Entity> entities, int size) {
+    public Bomb(int x, int y, Image img/*,List<Entity> entities*/, int size) {
         super(x, y, img);
         this.size = size;
-        this.entities = entities;
+//        this.entities = entities;
     }
 
     public void getImage() {
@@ -50,11 +50,11 @@ public class Bomb extends Entity {
 
     @Override
     public void update(Scene scene) {
-        animation++;
+        animate++;
         int px = x / Sprite.SCALED_SIZE;
         int py = y / Sprite.SCALED_SIZE;
 
-        if (animation == 70) {
+        if (animate >= 70) {
             exploded = true;
             Platform.runLater(
                     () -> {
@@ -62,42 +62,43 @@ public class Bomb extends Entity {
                             int i = x / Sprite.SCALED_SIZE - c, j = y / Sprite.SCALED_SIZE;
                             if (checkBreak(i, j)) break;
                             if (c < size) {
-                                entities.add(new Flame(i, j, null, 'H', entities));
+                                BombermanGame.addBomb(new Flame(i, j, null, 'H'));
                             } else {
-                                entities.add(new Flame(i, j, null, 'L', entities));
+                                BombermanGame.addBomb(new Flame(i, j, null, 'L'));
                             }
                         }
                         for (int c = 1; c <= size; c++) {
                             int i = x / Sprite.SCALED_SIZE + c, j = y / Sprite.SCALED_SIZE;
                             if (checkBreak(i, j)) break;
                             if (c < size) {
-                                entities.add(new Flame(i, j, Sprite.explosion_horizontal.getFxImage(), 'H', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_horizontal.getFxImage(), 'H'));
                             } else {
-                                entities.add(new Flame(i, j, Sprite.explosion_horizontal_right_last.getFxImage(), 'R', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_horizontal_right_last.getFxImage(), 'R'));
                             }
                         }
                         for (int c = 1; c <= size; c++) {
                             int i = x / Sprite.SCALED_SIZE, j = y / Sprite.SCALED_SIZE - c;
                             if (checkBreak(i, j)) break;
                             if (c < size) {
-                                entities.add(new Flame(i, j, Sprite.explosion_vertical.getFxImage(), 'V', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_vertical.getFxImage(), 'V'));
                             } else {
-                                entities.add(new Flame(i, j, Sprite.explosion_vertical_top_last.getFxImage(), 'U', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_vertical_top_last.getFxImage(), 'U'));
                             }
                         }
                         for (int c = 1; c <= size; c++) {
                             int i = x / Sprite.SCALED_SIZE, j = y / Sprite.SCALED_SIZE + c;
                             if (checkBreak(i, j)) break;
                             if (c < size) {
-                                entities.add(new Flame(i, j, Sprite.explosion_vertical.getFxImage(), 'V', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_vertical.getFxImage(), 'V'));
                             } else {
-                                entities.add(new Flame(i, j, Sprite.explosion_vertical_down_last.getFxImage(), 'D', entities));
+                                BombermanGame.addBomb(new Flame(i, j, Sprite.explosion_vertical_down_last.getFxImage(), 'D'));
                             }
                         }
                     });
+            BombermanGame.removeFlames(this);
         }
-        if (animation > 1000000) {
-            animation = 0;
+        if (animate > 1000000) {
+            animate = 0;
         }
         getImage();
     }

@@ -5,17 +5,15 @@ import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import main.BombermanGame;
 
 import java.util.List;
 
 public class Flame extends Entity {
-    private final List<Entity> entities;
     private final char direction;
-    private int animation;
 
-    public Flame(int x, int y, Image img,char direction, List<Entity> entities) {
+    public Flame(int x, int y, Image img,char direction) {
         super(x, y, img);
-        this.entities = entities;
         this.direction = direction;
     }
 
@@ -40,7 +38,7 @@ public class Flame extends Entity {
     public void update(Scene scene) {
         animate++;
         if (animate == 10) {
-            Platform.runLater(() -> entities.remove(this));
+            Platform.runLater(() -> BombermanGame.removeFlames(this));
         }
         getImage();
     }
