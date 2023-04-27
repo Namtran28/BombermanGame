@@ -14,16 +14,17 @@ public abstract class Entity {
     protected int x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
+
+    protected Sprite sprite;
     protected boolean goUp, goDown, goLeft, goRight;
     protected Image img;
     protected char direction;
-    protected char[] directions = {'L','R','U','D'};
+    protected char[] directions = {'L','R','U','D','H','V'};
     protected boolean move = false;
     protected int animate = 0;
     protected int life;
     protected boolean died = false;
     protected boolean beDamaged = false;
-    protected int hurtTick = 0;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {
@@ -54,7 +55,7 @@ public abstract class Entity {
         x /= Sprite.SCALED_SIZE;
         y /= Sprite.SCALED_SIZE;
         Entity cur = getEntity(y, x);
-        return !(cur instanceof Wall);
+        return !(cur instanceof Wall) && !(cur instanceof Bomb);
     }
 
     public void render(GraphicsContext gc) {
