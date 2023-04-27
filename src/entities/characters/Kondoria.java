@@ -44,80 +44,80 @@ public class Kondoria extends Enemy {
     public  void moving() {
         chooseDirectionRandom();
         if (direction == 'D') {
-            if (checkWall(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkWall(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
+            if (checkBrick(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkBrick(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
                 y++;
                 move = true;
             }
-            if (!(checkWall(x + 3, y + Sprite.SCALED_SIZE + 1))) {
-                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'R';
-                    move = true;
-                    x++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y + Sprite.SCALED_SIZE + 1))) {
-                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'L';
-                    move = true;
-                    x--;
-                }
-            }
+//            if (!(checkBrick(x + 3, y + Sprite.SCALED_SIZE + 1))) {
+//                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'R';
+//                    move = true;
+//                    x++;
+//                }
+//            } else if (!(checkBrick(x + Sprite.SCALED_SIZE - 3, y + Sprite.SCALED_SIZE + 1))) {
+//                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'L';
+//                    move = true;
+//                    x--;
+//                }
+//            }
         }
         if (direction == 'U') {
-            if (checkWall(x + 3, y - 1) && checkWall(x - 3 + Sprite.SCALED_SIZE, y - 1)) {
+            if (checkBrick(x + 3, y - 1) && checkBrick(x - 3 + Sprite.SCALED_SIZE, y - 1)) {
                 y--;
                 move = true;
             }
-            if (!(checkWall(x + 3, y - 1))) {
-                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'R';
-                    move = true;
-                    x++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y - 1))) {
-                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'L';
-                    move = true;
-                    x--;
-                }
-            }
+//            if (!(checkBrick(x + 3, y - 1))) {
+//                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'R';
+//                    move = true;
+//                    x++;
+//                }
+//            } else if (!(checkBrick(x + Sprite.SCALED_SIZE - 3, y - 1))) {
+//                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'L';
+//                    move = true;
+//                    x--;
+//                }
+//            }
         }
         if (direction == 'L') {
-            if (checkWall(x - 1, y + 3) && checkWall(x - 1, y - 3 + Sprite.SCALED_SIZE)) {
+            if (checkBrick(x - 1, y + 3) && checkBrick(x - 1, y - 3 + Sprite.SCALED_SIZE)) {
                 x--;
                 move = true;
             }
-            if (!(checkWall(x - 1, y + 3))) {
-                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'D';
-                    move = true;
-                    y++;
-                }
-            } else if (!(checkWall(x - 1, y + Sprite.SCALED_SIZE - 3))) {
-                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'U';
-                    move = true;
-                    y--;
-                }
-            }
+//            if (!(checkBrick(x - 1, y + 3))) {
+//                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'D';
+//                    move = true;
+//                    y++;
+//                }
+//            } else if (!(checkBrick(x - 1, y + Sprite.SCALED_SIZE - 3))) {
+//                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'U';
+//                    move = true;
+//                    y--;
+//                }
+//            }
         }
         if (direction == 'R') {
-            if (checkWall(x + 1 + Sprite.SCALED_SIZE, y + 3) && checkWall(x + 1 + Sprite.SCALED_SIZE, y - 3 + Sprite.SCALED_SIZE)) {
+            if (checkBrick(x + 1 + Sprite.SCALED_SIZE, y + 3) && checkBrick(x + 1 + Sprite.SCALED_SIZE, y - 3 + Sprite.SCALED_SIZE)) {
                 x++;
                 move = true;
             }
-            if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + 3))) {
-                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'D';
-                    move = true;
-                    y++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + Sprite.SCALED_SIZE - 3))) {
-                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'U';
-                    move = true;
-                    y--;
-                }
-            }
+//            if (!(checkBrick(x + Sprite.SCALED_SIZE + 1, y + 3))) {
+//                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'D';
+//                    move = true;
+//                    y++;
+//                }
+//            } else if (!(checkBrick(x + Sprite.SCALED_SIZE + 1, y + Sprite.SCALED_SIZE - 3))) {
+//                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'U';
+//                    move = true;
+//                    y--;
+//                }
+//            }
         }
     }
     @Override
