@@ -25,12 +25,12 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private static List<Entity> enemies = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-    private List<Entity> items = new ArrayList<>();
-    private List<Entity> backGround = new ArrayList<>();
+    private static List<Entity> enemies = new ArrayList<>(); // list of enemies.
+    private static List<Entity> stillObjects = new ArrayList<>(); // list of Wall, Brick and Bomb.
+    private List<Entity> items = new ArrayList<>(); // list items.
+    private List<Entity> backGround = new ArrayList<>(); // only Grass
     private KeyHandler keyHandler;
-    private static Entity[][] table;
+    private static Entity[][] table; // table contain Wall, Brick, Bomb, Item, Grass --- not contain Bomber and Enemy.
     public static Entity player;
 
     public static void main(String[] args) {
@@ -76,6 +76,13 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
+    }
+
+    public static void addBomb(Entity bomb) {
+        stillObjects.add(bomb);
+    }
+    public static void removeEnemy(Entity enemy) {
+        enemies.remove(enemy);
     }
 
     @Override

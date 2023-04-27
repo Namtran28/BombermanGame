@@ -23,6 +23,7 @@ public abstract class Entity {
     protected int life;
     protected boolean died = false;
     protected boolean beDamaged = false;
+    protected int hurtTick = 0;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {
@@ -45,17 +46,16 @@ public abstract class Entity {
         return !(cur instanceof Wall) && !(cur instanceof Brick);
     }
 
-//    public static boolean checkBrick(int x, int y) {
-//        if (x < 0 || y < 0 || x > Sprite.SCALED_SIZE * BombermanGame.WIDTH || y > Sprite.SCALED_SIZE * BombermanGame.HEIGHT) {
-//            return false;
-//        }
-//
-//        x /= Sprite.SCALED_SIZE;
-//        y /= Sprite.SCALED_SIZE;
-////        Entity cur = getEntity(x, y);
-////        return !(cur instanceof Wall) && !(cur instanceof Bomb);
-//        return true;
-//    }
+    public static boolean checkBrick(int x, int y) {
+        if (x < 0 || y < 0 || x > Sprite.SCALED_SIZE * BombermanGame.WIDTH || y > Sprite.SCALED_SIZE * BombermanGame.HEIGHT) {
+            return false;
+        }
+
+        x /= Sprite.SCALED_SIZE;
+        y /= Sprite.SCALED_SIZE;
+        Entity cur = getEntity(y, x);
+        return !(cur instanceof Wall);
+    }
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
