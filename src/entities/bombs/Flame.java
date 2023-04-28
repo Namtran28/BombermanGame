@@ -1,6 +1,8 @@
 package entities.bombs;
 
 import entities.Entity;
+import entities.player.Bomber;
+import entities.tiles.Grass;
 import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -37,8 +39,10 @@ public class Flame extends Entity {
     @Override
     public void update(Scene scene) {
         animate++;
-        if (animate == 10) {
-            Platform.runLater(() -> BombermanGame.removeFlames(this));
+        if (animate == 13) {
+            Platform.runLater(() -> {
+                BombermanGame.removeFlames(this);
+            });
         }
         getImage();
     }

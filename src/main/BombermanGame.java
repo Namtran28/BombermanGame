@@ -27,11 +27,11 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private static List<Entity> enemies = new ArrayList<>(); // list of enemies.
     private static List<Entity> stillObjects = new ArrayList<>(); // list of Wall, Brick and Bomb.
-    private List<Entity> items = new ArrayList<>(); // list items.
+    private static List<Entity> items = new ArrayList<>(); // list items.
     private List<Entity> backGround = new ArrayList<>(); // only Grass
     private KeyHandler keyHandler;
     private static Entity[][] table; // table contain Wall, Brick, Bomb, Item, Grass --- not contain Bomber and Enemy.
-    public static Entity player;
+    public static Bomber player;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -55,13 +55,13 @@ public class BombermanGame extends Application {
         map.createMap(keyHandler);
         items = map.getItems();
         stillObjects = map.getStillObjects();
-        enemies = map.getEntities();
+        enemies = map.getEnemies();
         backGround = map.getBackGround();
         table = map.getTable();
         player = map.getPlayer();
 
         // Add scene vao stage
-        stage.setTitle("Bomberman");
+        stage.setTitle("Bomberman L&N");
         stage.setScene(scene);
         Image icon = new Image("/Mew.jpg");
         stage.getIcons().add(icon);
@@ -98,6 +98,9 @@ public class BombermanGame extends Application {
         for (Entity item : items) {
             item.update(scene);
         }
+        for (Entity entity : stillObjects) {
+            entity.update(scene);
+        }
     }
 
     public void render() {
@@ -121,10 +124,15 @@ public class BombermanGame extends Application {
         return enemies;
     }
 
-    public static List<Entity> getStillObjects() {
-        return stillObjects;
-    }
     public static void removeFlames(Entity flame) {
         stillObjects.remove(flame);
+    }
+    public static void removeBrick(Entity brick) {
+        stillObjects.remove(brick);
+        table[brick.getY() / Sprite.SCALED_SIZE][brick.getX() / Sprite.SCALED_SIZE] = null;
+    }
+
+    public static List<Entity> getItems() {
+        return items;
     }
 }

@@ -1,6 +1,8 @@
 package entities;
 
 import entities.characters.Enemy;
+import entities.characters.Kondoria;
+import entities.player.Bomber;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -21,6 +23,7 @@ public abstract class Entity {
     protected char direction;
     protected char[] directions = {'L','R','U','D','H','V'};
     protected boolean move = false;
+    protected int STEP = 2;
     protected int animate = 0;
     protected int life;
     protected boolean died = false;
@@ -36,7 +39,7 @@ public abstract class Entity {
     public Entity() {
     }
 
-    public static boolean checkWall(int x, int y) {
+    public boolean checkWall(int x, int y) {
         if (x < Sprite.SCALED_SIZE || y < Sprite.SCALED_SIZE || x > Sprite.SCALED_SIZE * (BombermanGame.WIDTH - 1) || y > Sprite.SCALED_SIZE * (BombermanGame.HEIGHT - 1)) {
             return false;
         }
@@ -44,7 +47,9 @@ public abstract class Entity {
         x /= Sprite.SCALED_SIZE;
         y /= Sprite.SCALED_SIZE;
         Entity cur = getEntity(y, x);
-        return !(cur instanceof Wall) && !(cur instanceof Brick);
+        if (this instanceof Kondoria) return !(cur instanceof Wall) && !(cur instanceof Bomb);
+        if (this instanceof Bomber) return !(cur instanceof Wall) && !(cur instanceof Brick);
+        return !(cur instanceof Wall) && !(cur instanceof Brick) && !(cur instanceof Bomb);
     }
 
     public static boolean checkBrick(int x, int y) {
@@ -55,7 +60,7 @@ public abstract class Entity {
         x /= Sprite.SCALED_SIZE;
         y /= Sprite.SCALED_SIZE;
         Entity cur = getEntity(y, x);
-        return !(cur instanceof Wall)/* && !(cur instanceof Bomb)*/;
+        return !(cur instanceof Wall) && !(cur instanceof Bomb);
     }
 
     public void render(GraphicsContext gc) {
@@ -68,7 +73,7 @@ public abstract class Entity {
         return BombermanGame.getTable()[x][y];
     }
 
-    protected void damaged() {
+    public void damaged() {
         life--;
         beDamaged = true;
         if (life == 0) died = true;
@@ -89,4 +94,5 @@ public abstract class Entity {
     public int getYUnit() {
         return (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
+
 }

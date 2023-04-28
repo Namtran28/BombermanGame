@@ -7,6 +7,7 @@ import entities.player.Bomber;
 import entities.tiles.*;
 import graphics.Sprite;
 import playerInputs.KeyHandler;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ import java.util.List;
 public class Map {
     private char[][] map;
     private int rows, cols;
-    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> enemies = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
-    private Entity player = new Bomber();
+    private Bomber player = new Bomber();
     private Entity[][] table;
 
 
@@ -71,7 +72,7 @@ public class Map {
                     item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
-                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), 3, keyHandler);
+                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), 30, keyHandler);
                 } else if (map[j][i] == '1') {
                     enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage(), 1);
                 } else if (map[j][i] == '2') {
@@ -96,8 +97,7 @@ public class Map {
                 backGround.add(new Grass(i, j, Sprite.grass.getFxImage()));
 
                 if (!(enemy == null)) {
-                    entities.add(enemy);
-                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    enemies.add(enemy);
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 if (!(object == null)) {
@@ -106,8 +106,12 @@ public class Map {
                 }
                 if (!(item == null)) {
                     items.add(item);
-                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
-                    table[j][i] = new Brick(i, j, Sprite.brick.getFxImage());
+                    Entity brick = new Brick(i, j, Sprite.brick.getFxImage());
+                    table[j][i] = brick;
+                    stillObjects.add(brick);
+
+//                    stillObjects.add(new Brick(i, j, Sprite.brick.getFxImage()));
+//                    table[j][i] = new Brick(i, j, Sprite.brick.getFxImage());
                 }
             }
         }
@@ -129,8 +133,8 @@ public class Map {
         return cols;
     }
 
-    public List<Entity> getEntities() {
-        return entities;
+    public List<Entity> getEnemies() {
+        return enemies;
     }
 
     public List<Entity> getStillObjects() {
@@ -141,7 +145,7 @@ public class Map {
         return items;
     }
 
-    public Entity getPlayer() {
+    public Bomber getPlayer() {
         return player;
     }
 }
