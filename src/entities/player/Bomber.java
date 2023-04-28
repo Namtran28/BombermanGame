@@ -1,6 +1,7 @@
 package entities.player;
 
 import entities.bombs.Bomb;
+import entities.items.*;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
 import graphics.Sprite;
@@ -20,6 +21,7 @@ public class Bomber extends Entity {
     private boolean speedItem = false;
     private boolean wallPass = false;
     private static int bombCounter = 1;
+    private static int bomb_size = 1;
     public static Entity bomb;
 
     public Bomber() {
@@ -90,6 +92,7 @@ public class Bomber extends Entity {
         checkDied(died);
         unDeadTime = Math.max(0, unDeadTime - 1);
         moving();
+        getItem();
         chooseSprite();
         move = false;
         if (keyHandler.isPressed(KeyCode.SPACE)) {
@@ -264,7 +267,7 @@ public class Bomber extends Entity {
 
     public void setBomb() {
         if (canSetBomb()) {
-            bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), 1);
+            bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), bomb_size);
             BombermanGame.addBomb(bomb);
             BombermanGame.setTable(getYUnit(), getXUnit(), bomb);
             bombCounter--;
@@ -273,5 +276,36 @@ public class Bomber extends Entity {
 
     public void reduceBombCounter() {
         this.bombCounter++;
+    }
+
+    public void getItem() {
+        int px = getYUnit();
+        int py = getXUnit();
+        if (BombermanGame.getTable()[px][py] instanceof FlameItem) {
+            if (!((FlameItem) BombermanGame.getTable()[px][py]).isPassed()) {
+                bomb_size++;
+            }
+            ((FlameItem) BombermanGame.getTable()[px][py]).setIsPassed();
+        } else if (BombermanGame.getTable()[px][py] instanceof SpeedItem) {
+            if (!((SpeedItem) BombermanGame.getTable()[px][py]).isPassed()) {
+                STEP++;
+            }
+            ((SpeedItem) BombermanGame.getTable()[px][py]).setIsPassed();
+        } else if (BombermanGame.getTable()[px][py] instanceof BombItem) {
+            if (!((BombItem) BombermanGame.getTable()[px][py]).isPassed()) {
+                bombCounter++;
+            }
+            ((BombItem) BombermanGame.getTable()[px][py]).setIsPassed();
+        } else if (BombermanGame.getTable()[px][py] instanceof FlamePass) {
+            if (!((FlamePass) BombermanGame.getTable()[px][py]).isPassed()) {
+                flamePass = true;
+            }
+            ((FlamePass) BombermanGame.getTable()[px][py]).setIsPassed();
+        } else if (BombermanGame.getTable()[px][py] instanceof WallPass) {
+            if (!((WallPass) BombermanGame.getTable()[px][py]).isPassed()) {
+                wallPass = true;
+            }
+            ((WallPass) BombermanGame.getTable()[px][py]).setIsPassed();
+        }
     }
 }

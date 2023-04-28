@@ -135,4 +135,7 @@ public class BombermanGame extends Application {
     public static List<Entity> getItems() {
         return items;
     }
+    public static void removeItem(Entity item) {
+        items.remove(item);
+    }
 }

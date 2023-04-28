@@ -19,21 +19,21 @@ public class Brick extends Entity {
         exploded = true;
     }
     public void beExploded() {
-        if (exploded == true) {
+        if (exploded) {
             Sprite sprite = Sprite.movingSprite(Sprite.brick_exploded, Sprite.brick_exploded1, Sprite.brick_exploded2, animate, 20);
             img = sprite.getFxImage();
             animate++;
             if (animate == 10) {
                 Platform.runLater(() -> {
                     int dx = x / Sprite.SCALED_SIZE;
-                    int dy = x / Sprite.SCALED_SIZE;
-                    BombermanGame.removeBrick(this);
+                    int dy = y / Sprite.SCALED_SIZE;
                     for (Entity item : BombermanGame.getItems()) {
-                        if (item.getX() / Sprite.SCALED_SIZE == x && item.getY() / Sprite.SCALED_SIZE == y) {
-                            BombermanGame.setTable(y, x, item);
+                        if (item.getX() == x && item.getY() == y) {
+                            BombermanGame.setTable(dy, dx, item);
                             break;
                         }
                     }
+                    BombermanGame.removeBrick(this);
                 });
             }
         }
