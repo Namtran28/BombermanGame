@@ -1,6 +1,7 @@
 package main;
 
 import Map.Map;
+import entities.bombs.Bomb;
 import entities.player.Bomber;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -58,6 +59,7 @@ public class BombermanGame extends Application {
         enemies = map.getEnemies();
         backGround = map.getBackGround();
         table = map.getTable();
+        Bomb.cnt = 0;
         player = map.getPlayer();
 
         // Add scene vao stage
@@ -81,6 +83,7 @@ public class BombermanGame extends Application {
     public static void addBomb(Entity bomb) {
         stillObjects.add(bomb);
     }
+
     public static void removeEnemy(Entity enemy) {
         enemies.remove(enemy);
     }
@@ -105,7 +108,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        backGround.forEach((g->g.render(gc)));
+        backGround.forEach((g -> g.render(gc)));
         items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         enemies.forEach(g -> g.render(gc));
@@ -127,14 +130,15 @@ public class BombermanGame extends Application {
     public static void removeFlames(Entity flame) {
         stillObjects.remove(flame);
     }
+
     public static void removeBrick(Entity brick) {
         stillObjects.remove(brick);
-        table[brick.getY() / Sprite.SCALED_SIZE][brick.getX() / Sprite.SCALED_SIZE] = null;
     }
 
     public static List<Entity> getItems() {
         return items;
     }
+
     public static void removeItem(Entity item) {
         items.remove(item);
     }

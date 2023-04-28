@@ -1,5 +1,6 @@
 package entities.items;
 
+import entities.tiles.Grass;
 import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -35,7 +36,11 @@ public class Item extends Entity {
         img = image;
         if (isPassed) {
             Platform.runLater(() -> {
-                BombermanGame.setTable(y / Sprite.SCALED_SIZE, x / Sprite.SCALED_SIZE, null);
+                BombermanGame.setTable(y / Sprite.SCALED_SIZE,
+                                    x / Sprite.SCALED_SIZE,
+                                        new Grass(x / Sprite.SCALED_SIZE,
+                                                y / Sprite.SCALED_SIZE,
+                                                Sprite.grass.getFxImage()));
                 BombermanGame.removeItem(this);
             });
         }

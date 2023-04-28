@@ -21,14 +21,18 @@ public class Bomb extends Entity {
     private final int size;
 //    private int animate = 0;
     private boolean exploded = false;
+
+    public static int cnt = 0;
 //    private final List<Entity> entities;
-    private Entity cur;
+
+    private Entity current;
 
     public Bomb(int x, int y, Image img/*,List<Entity> entities*/, int size) {
         super(x, y, img);
         this.size = size;
-        cur = BombermanGame.getTable()[y][x];
+        current = BombermanGame.getTable()[y][x];
         BombermanGame.setTable(y, x, this);
+        cnt++;
 //        this.entities = entities;
     }
 
@@ -43,6 +47,7 @@ public class Bomb extends Entity {
 
     private boolean checkBreak(int x, int y) {
         Entity cur = BombermanGame.getTable()[y][x];
+        //if (cur != null) System.out.println(x + " " + y + " " + cur.getClass().getName());
         if (cur instanceof Wall) {
             return true;
         }
@@ -161,9 +166,9 @@ public class Bomb extends Entity {
         }
         if (animate == 80) {
             Platform.runLater(() -> {
+                cnt--;
+                BombermanGame.setTable(y / Sprite.SCALED_SIZE, x / Sprite.SCALED_SIZE, current);
                 BombermanGame.removeFlames(this);
-                BombermanGame.player.reduceBombCounter();
-                BombermanGame.setTable(py, px, cur);
             });
         }
         if (animate > 100000) {
