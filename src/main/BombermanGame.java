@@ -35,7 +35,8 @@ public class BombermanGame extends Application {
     private static Entity[][] moveEntitiesTable;
     private static Entity[][] itemsTable;
     public static Bomber player;
-    private static int level = 2;
+    private static int level = 0;
+    public static boolean levelChanged = true;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -95,7 +96,16 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        load(stage, level);
+        AnimationTimer test = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (levelChanged) {
+                    load(stage, level);
+                    levelChanged = false;
+                }
+            }
+        };
+        test.start();
     }
 
     public void update(Scene scene) {

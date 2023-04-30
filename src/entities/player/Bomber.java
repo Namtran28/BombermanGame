@@ -298,7 +298,10 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            BombermanGame.setLevel(getLevel() + 1);
+            if (BombermanGame.getEnemies().isEmpty()) {
+                BombermanGame.setLevel(getLevel() + 1);
+                BombermanGame.levelChanged = true;
+            }
         }
     }
 }
