@@ -23,18 +23,14 @@ public class Brick extends Entity {
             animate++;
             if (animate == 10) {
                 Platform.runLater(() -> {
-                    //System.out.println("1");
                     int dx = x / Sprite.SCALED_SIZE;
                     int dy = y / Sprite.SCALED_SIZE;
                     BombermanGame.setTable(dy, dx, new Grass(dx, dy, Sprite.grass.getFxImage()));
-                    for (Entity item : BombermanGame.getItems()) {
-                        if (item.getX() == x && item.getY() == y) {
-                            //System.out.println(dy + " " + dx + " " + item.getClass().getName());
-                            BombermanGame.setTable(dy, dx, item);
-                            break;
-                        }
+                    Entity item = BombermanGame.getItemsTable()[dy][dx];
+                    if (item != null) {
+                        BombermanGame.setTable(dy, dx, item);
+                        BombermanGame.setItemsTable(dy, dx, null);
                     }
-                    //System.out.println(dy + " " + dx + " " + BombermanGame.getTable()[dy][dx].getClass().getName());
                     BombermanGame.removeBrick(this);
                 });
             }

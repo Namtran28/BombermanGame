@@ -32,7 +32,10 @@ public class BombermanGame extends Application {
     private List<Entity> backGround = new ArrayList<>(); // only Grass
     private KeyHandler keyHandler;
     private static Entity[][] table; // table contain Wall, Brick, Bomb, Item, Grass --- not contain Bomber and Enemy.
+    private static Entity[][] moveEntitiesTable;
+    private static Entity[][] itemsTable;
     public static Bomber player;
+    private static int level = 2;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -59,6 +62,8 @@ public class BombermanGame extends Application {
         enemies = map.getEnemies();
         backGround = map.getBackGround();
         table = map.getTable();
+        moveEntitiesTable = map.getMoveEntitiesTable();
+        itemsTable = map.getItemsTable();
         Bomb.cnt = 0;
         player = map.getPlayer();
 
@@ -90,7 +95,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        load(stage, 2);
+        load(stage, level);
     }
 
     public void update(Scene scene) {
@@ -141,5 +146,28 @@ public class BombermanGame extends Application {
 
     public static void removeItem(Entity item) {
         items.remove(item);
+    }
+
+    public static Entity[][] getMoveEntitiesTable() {
+        return moveEntitiesTable;
+    }
+
+    public static Entity[][] getItemsTable() {
+        return itemsTable;
+    }
+
+    public static void setMoveEntitiesTable(int px, int py, Entity entity) {
+        moveEntitiesTable[px][py] = entity;
+    }
+    public static void setItemsTable(int px, int py, Entity entity) {
+        itemsTable[px][py] = entity;
+    }
+
+    public static void setLevel(int level) {
+        BombermanGame.level = level;
+    }
+
+    public static int getLevel() {
+        return level;
     }
 }

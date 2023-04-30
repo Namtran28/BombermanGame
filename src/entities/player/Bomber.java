@@ -1,6 +1,7 @@
 package entities.player;
 
 import entities.bombs.Bomb;
+import entities.characters.Enemy;
 import entities.items.*;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
@@ -12,6 +13,8 @@ import javafx.scene.input.KeyCode;
 import entities.Entity;
 import main.BombermanGame;
 import playerInputs.KeyHandler;
+
+import static main.BombermanGame.getLevel;
 
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
@@ -211,11 +214,9 @@ public class Bomber extends Entity {
     }
 
     private boolean beDamaged(int px, int py) {
-        for (Entity enemy : BombermanGame.getEnemies()) {
-            if (enemy.getXUnit() == px && enemy.getYUnit() == py && !isUnDead()) {
-                damaged();
-                return true;
-            }
+        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
+            damaged();
+            return true;
         }
         return false;
     }
@@ -296,6 +297,8 @@ public class Bomber extends Entity {
                 wallPass = true;
             }
             ((WallPass) e).setIsPassed();
+        } else if (e instanceof Portal) {
+            BombermanGame.setLevel(getLevel() + 1);
         }
     }
 }

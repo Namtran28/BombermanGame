@@ -13,7 +13,7 @@ public class Doll extends Enemy {
     public void chooseSprite() {
         animate++;
         if (animate > 100000) animate = 0;
-        if (beDamaged) {
+        if (died) {
             img = Sprite.movingSprite(Sprite.doll_dead,
                     Sprite.mob_dead2,
                     Sprite.mob_dead3,
@@ -43,7 +43,7 @@ public class Doll extends Enemy {
 
     @Override
     public void update(Scene scene) {
-        if (beDamaged) {
+        if (died) {
             gotHurt(Sprite.doll_dead);
             chooseSprite();
             return;

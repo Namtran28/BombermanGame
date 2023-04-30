@@ -1,15 +1,11 @@
 package entities.bombs;
 
 import entities.Entity;
-import entities.player.Bomber;
-import entities.tiles.Grass;
 import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import main.BombermanGame;
-
-import java.util.List;
 
 public class Flame extends Entity {
     private final char direction;

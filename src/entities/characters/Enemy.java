@@ -44,6 +44,7 @@ public abstract class Enemy extends Entity {
     }
 
     public void moving() {
+        BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
         chooseDirectionRandom();
 //        if (this instanceof Oneal) {
 //            chooseDirection();
@@ -127,13 +128,16 @@ public abstract class Enemy extends Entity {
 //            }
         }
 //        BombermanGame.setTable(getYUnit(), getXUnit(), this);
+//        if (BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Bomb) damaged();
+        BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), this);
     }
 
     protected void gotHurt(Sprite sprite) {
         hurtTick++;
         img = sprite.getFxImage();
-        if (hurtTick >= 20) {
+        if (hurtTick >= 20 && died) {
             Platform.runLater(() -> {
+                BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
                 BombermanGame.removeEnemy(this);
             });
         }

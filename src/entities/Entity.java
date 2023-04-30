@@ -18,7 +18,6 @@ public abstract class Entity {
     protected int y;
 
     protected Sprite sprite;
-    protected boolean goUp, goDown, goLeft, goRight;
     protected Image img;
     protected char direction;
     protected char[] directions = {'L','R','U','D','H','V'};
@@ -48,20 +47,23 @@ public abstract class Entity {
         y /= Sprite.SCALED_SIZE;
         Entity cur = getEntity(y, x);
         if (this instanceof Kondoria) return !(cur instanceof Wall) && !(cur instanceof Bomb);
-        if (this instanceof Bomber) return !(cur instanceof Wall) && !(cur instanceof Brick);
+        if (this instanceof Bomber) {
+            if (((Bomber) this).isWallPass()) return !(cur instanceof Wall);
+            return !(cur instanceof Wall) && !(cur instanceof Brick);
+        }
         return !(cur instanceof Wall) && !(cur instanceof Brick) && !(cur instanceof Bomb);
     }
 
-    public static boolean checkBrick(int x, int y) {
-        if (x < 0 || y < 0 || x > Sprite.SCALED_SIZE * BombermanGame.WIDTH || y > Sprite.SCALED_SIZE * BombermanGame.HEIGHT) {
-            return false;
-        }
-
-        x /= Sprite.SCALED_SIZE;
-        y /= Sprite.SCALED_SIZE;
-        Entity cur = getEntity(y, x);
-        return !(cur instanceof Wall) && !(cur instanceof Bomb);
-    }
+//    public static boolean checkBrick(int x, int y) {
+//        if (x < 0 || y < 0 || x > Sprite.SCALED_SIZE * BombermanGame.WIDTH || y > Sprite.SCALED_SIZE * BombermanGame.HEIGHT) {
+//            return false;
+//        }
+//
+//        x /= Sprite.SCALED_SIZE;
+//        y /= Sprite.SCALED_SIZE;
+//        Entity cur = getEntity(y, x);
+//        return !(cur instanceof Wall) && !(cur instanceof Bomb);
+//    }
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
@@ -74,7 +76,7 @@ public abstract class Entity {
     }
 
     public void damaged() {
-        life--;
+        if (beDamaged) life--;
         beDamaged = true;
         if (life == 0) died = true;
     }

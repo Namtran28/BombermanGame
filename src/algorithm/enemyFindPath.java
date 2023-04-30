@@ -59,11 +59,19 @@ public class enemyFindPath {
         Pair<Integer, Integer> nextStep = new Pair<>(x, y);
         try {
             _table = BombermanGame.getTable();
-
+            for (int i = 0; i < BombermanGame.HEIGHT; i++) {
+                Arrays.fill(pathTo[i], new Pair<>(x, y));
+                Arrays.fill(visited[i], false);
+            }
             dfs(x, y);
             int py = BombermanGame.player.getXUnit();
             int px = BombermanGame.player.getYUnit();
+            if (!visited[px][py]) {
+                return nextStep;
+            }
+            nextStep = new Pair<>(px, py);
             while (px != x && py != y) {
+                //nextStep = new Pair<>(px, py);
                 int tmp = px;
                 px = pathTo[tmp][py].getKey();
                 py = pathTo[tmp][py].getValue();
@@ -71,11 +79,12 @@ public class enemyFindPath {
             }
         } catch (Exception e) {
 //            int id = new Random().nextInt(4);
-//            System.out.println("Exception " + id + " " + x + " " + y + " " + BombermanGame.getTable()[x][y].getClass().getName() + " " + visited[x][y]);
+//            //System.out.println("Exception " + id + " " + x + " " + y + " " + BombermanGame.getTable()[x][y].getClass().getName() + " " + visited[x][y]);
 //            if (!(BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Brick || BombermanGame.getTable()[x + dx[id]][y + dy[id]] instanceof Wall)) {
 //                nextStep = new Pair<>(x + dx[id], y + dy[id]);
 //            }
         }
+        //System.out.println(nextStep.getKey() + " " + nextStep.getValue());
         return nextStep;
     }
 
