@@ -1,6 +1,7 @@
 package main;
 
 import Map.Map;
+import entities.bombs.Bomb;
 import entities.player.Bomber;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -31,7 +32,11 @@ public class BombermanGame extends Application {
     private List<Entity> backGround = new ArrayList<>(); // only Grass
     private KeyHandler keyHandler;
     private static Entity[][] table; // table contain Wall, Brick, Bomb, Item, Grass --- not contain Bomber and Enemy.
+    private static Entity[][] moveEntitiesTable;
+    private static Entity[][] itemsTable;
     public static Bomber player;
+    private static int level = 0;
+    public static boolean levelChanged = true;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -58,6 +63,9 @@ public class BombermanGame extends Application {
         enemies = map.getEnemies();
         backGround = map.getBackGround();
         table = map.getTable();
+        moveEntitiesTable = map.getMoveEntitiesTable();
+        itemsTable = map.getItemsTable();
+        Bomb.cnt = 0;
         player = map.getPlayer();
 
         // Add scene vao stage
@@ -81,13 +89,23 @@ public class BombermanGame extends Application {
     public static void addBomb(Entity bomb) {
         stillObjects.add(bomb);
     }
+
     public static void removeEnemy(Entity enemy) {
         enemies.remove(enemy);
     }
 
     @Override
     public void start(Stage stage) {
-        load(stage, 2);
+        AnimationTimer test = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (levelChanged) {
+                    load(stage, level);
+                    levelChanged = false;
+                }
+            }
+        };
+        test.start();
     }
 
     public void update(Scene scene) {
@@ -105,7 +123,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        backGround.forEach((g->g.render(gc)));
+        backGround.forEach((g -> g.render(gc)));
         items.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         enemies.forEach(g -> g.render(gc));
@@ -127,12 +145,39 @@ public class BombermanGame extends Application {
     public static void removeFlames(Entity flame) {
         stillObjects.remove(flame);
     }
+
     public static void removeBrick(Entity brick) {
         stillObjects.remove(brick);
-        table[brick.getY() / Sprite.SCALED_SIZE][brick.getX() / Sprite.SCALED_SIZE] = null;
     }
 
     public static List<Entity> getItems() {
         return items;
+    }
+
+    public static void removeItem(Entity item) {
+        items.remove(item);
+    }
+
+    public static Entity[][] getMoveEntitiesTable() {
+        return moveEntitiesTable;
+    }
+
+    public static Entity[][] getItemsTable() {
+        return itemsTable;
+    }
+
+    public static void setMoveEntitiesTable(int px, int py, Entity entity) {
+        moveEntitiesTable[px][py] = entity;
+    }
+    public static void setItemsTable(int px, int py, Entity entity) {
+        itemsTable[px][py] = entity;
+    }
+
+    public static void setLevel(int level) {
+        BombermanGame.level = level;
+    }
+
+    public static int getLevel() {
+        return level;
     }
 }

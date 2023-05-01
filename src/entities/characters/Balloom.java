@@ -13,7 +13,7 @@ public class Balloom extends Enemy {
     public void chooseSprite() {
         animate++;
         if (animate > 100000) animate = 0;
-        if (beDamaged) {
+        if (died) {
             img = Sprite.movingSprite(Sprite.balloom_dead,
                     Sprite.mob_dead2,
                     Sprite.mob_dead3,
@@ -43,7 +43,7 @@ public class Balloom extends Enemy {
 
     @Override
     public void update(Scene scene) {
-        if (beDamaged) {
+        if (died) {
             gotHurt(Sprite.balloom_dead);
             chooseSprite();
             return;

@@ -44,6 +44,7 @@ public abstract class Enemy extends Entity {
     }
 
     public void moving() {
+        BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
         chooseDirectionRandom();
 //        if (this instanceof Oneal) {
 //            chooseDirection();
@@ -55,85 +56,88 @@ public abstract class Enemy extends Entity {
                 y++;
                 move = true;
             }
-            if (!(checkWall(x + 3, y + Sprite.SCALED_SIZE + 1))) {
-                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'R';
-                    move = true;
-                    x++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y + Sprite.SCALED_SIZE + 1))) {
-                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'L';
-                    move = true;
-                    x--;
-                }
-            }
+//            if (!(checkWall(x + 3, y + Sprite.SCALED_SIZE + 1))) {
+//                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'R';
+//                    move = true;
+//                    x++;
+//                }
+//            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y + Sprite.SCALED_SIZE + 1))) {
+//                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'L';
+//                    move = true;
+//                    x--;
+//                }
+//            }
         }
         if (direction == 'U') {
             if (checkWall(x + 3, y - 1) && checkWall(x - 3 + Sprite.SCALED_SIZE, y - 1)) {
                 y--;
                 move = true;
             }
-            if (!(checkWall(x + 3, y - 1))) {
-                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'R';
-                    move = true;
-                    x++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y - 1))) {
-                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'L';
-                    move = true;
-                    x--;
-                }
-            }
+//            if (!(checkWall(x + 3, y - 1))) {
+//                if ((double) ((x + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (x + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'R';
+//                    move = true;
+//                    x++;
+//                }
+//            } else if (!(checkWall(x + Sprite.SCALED_SIZE - 3, y - 1))) {
+//                if ((double) ((x + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (x + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'L';
+//                    move = true;
+//                    x--;
+//                }
+//            }
         }
         if (direction == 'L') {
             if (checkWall(x - 1, y + 3) && checkWall(x - 1, y - 3 + Sprite.SCALED_SIZE)) {
                 x--;
                 move = true;
             }
-            if (!(checkWall(x - 1, y + 3))) {
-                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'D';
-                    move = true;
-                    y++;
-                }
-            } else if (!(checkWall(x - 1, y + Sprite.SCALED_SIZE - 3))) {
-                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'U';
-                    move = true;
-                    y--;
-                }
-            }
+//            if (!(checkWall(x - 1, y + 3))) {
+//                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'D';
+//                    move = true;
+//                    y++;
+//                }
+//            } else if (!(checkWall(x - 1, y + Sprite.SCALED_SIZE - 3))) {
+//                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'U';
+//                    move = true;
+//                    y--;
+//                }
+//            }
         }
         if (direction == 'R') {
             if (checkWall(x + 1 + Sprite.SCALED_SIZE, y + 3) && checkWall(x + 1 + Sprite.SCALED_SIZE, y - 3 + Sprite.SCALED_SIZE)) {
                 x++;
                 move = true;
             }
-            if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + 3))) {
-                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
-                    direction = 'D';
-                    move = true;
-                    y++;
-                }
-            } else if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + Sprite.SCALED_SIZE - 3))) {
-                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
-                    direction = 'U';
-                    move = true;
-                    y--;
-                }
-            }
+//            if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + 3))) {
+//                if ((double) ((y + 3) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 3) / Sprite.SCALED_SIZE) + 0.1)) {
+//                    direction = 'D';
+//                    move = true;
+//                    y++;
+//                }
+//            } else if (!(checkWall(x + Sprite.SCALED_SIZE + 1, y + Sprite.SCALED_SIZE - 3))) {
+//                if ((double) ((y + Sprite.SCALED_SIZE - 3) * 1.0 / Sprite.SCALED_SIZE) < (double) ((int) (y + Sprite.SCALED_SIZE - 3) / Sprite.SCALED_SIZE) + 0.1) {
+//                    direction = 'U';
+//                    move = true;
+//                    y--;
+//                }
+//            }
         }
 //        BombermanGame.setTable(getYUnit(), getXUnit(), this);
+//        if (BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Bomb) damaged();
+        BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), this);
     }
 
     protected void gotHurt(Sprite sprite) {
         hurtTick++;
         img = sprite.getFxImage();
-        if (hurtTick >= 20) {
+        if (hurtTick >= 20 && died) {
             Platform.runLater(() -> {
+                BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
                 BombermanGame.removeEnemy(this);
             });
         }

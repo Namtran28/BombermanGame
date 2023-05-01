@@ -1,19 +1,14 @@
 package entities.bombs;
 
 import entities.Entity;
-import entities.characters.Enemy;
 import entities.items.Item;
-import entities.player.Bomber;
 import entities.tiles.Brick;
-import entities.tiles.Grass;
 import entities.tiles.Wall;
 import graphics.Sprite;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import main.BombermanGame;
-
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,14 +16,18 @@ public class Bomb extends Entity {
     private final int size;
 //    private int animate = 0;
     private boolean exploded = false;
+
+    public static int cnt = 0;
 //    private final List<Entity> entities;
-    private Entity cur;
+
+    private Entity current;
 
     public Bomb(int x, int y, Image img/*,List<Entity> entities*/, int size) {
         super(x, y, img);
         this.size = size;
-        cur = BombermanGame.getTable()[y][x];
+        current = BombermanGame.getTable()[y][x];
         BombermanGame.setTable(y, x, this);
+        cnt++;
 //        this.entities = entities;
     }
 
@@ -43,6 +42,7 @@ public class Bomb extends Entity {
 
     private boolean checkBreak(int x, int y) {
         Entity cur = BombermanGame.getTable()[y][x];
+        //if (cur != null) System.out.println(x + " " + y + " " + cur.getClass().getName());
         if (cur instanceof Wall) {
             return true;
         }
@@ -58,17 +58,15 @@ public class Bomb extends Entity {
     }
     private void damage(int i, int j) {
         Entity cur = BombermanGame.getTable()[j][i];
-        //if (cur instanceof Enemy) {
+        Entity enemy = BombermanGame.getMoveEntitiesTable()[j][i];
+        if (enemy != null) {
             for (Entity e : BombermanGame.getEnemies()) {
                 if (e.getXUnit() == i && e.getYUnit() == j) {
                     e.damaged();
                 }
             }
-        //}
-//        if (cur instanceof Oneal) cur.setDied();
-//        if (cur instanceof Item) cur.setDied();
-//        if (cur instanceof SpeedItem) cur.setDied();
-//        if (cur instanceof BombItem) cur.setDied();
+        }
+        if (cur instanceof Item) ((Item) cur).setIsPassed();
         if (cur instanceof Bomb && !((Bomb) cur).isExploded()) ((Bomb) cur).setExplode();
         if (BombermanGame.player.getXUnit() == i &&
                 BombermanGame.player.getYUnit() == j &&
@@ -85,9 +83,6 @@ public class Bomb extends Entity {
     @Override
     public void update(Scene scene) {
         animate++;
-        int px = x / Sprite.SCALED_SIZE;
-        int py = y / Sprite.SCALED_SIZE;
-
         if (animate == 70) {
             exploded = true;
             Platform.runLater(
@@ -155,15 +150,12 @@ public class Bomb extends Entity {
                             }
                         }, 10);
                     });
-//            Platform.runLater(() -> {
-//                BombermanGame.removeFlames(this);
-//            });
         }
         if (animate == 80) {
             Platform.runLater(() -> {
+                cnt--;
+                BombermanGame.setTable(y / Sprite.SCALED_SIZE, x / Sprite.SCALED_SIZE, current);
                 BombermanGame.removeFlames(this);
-                BombermanGame.player.reduceBombCounter();
-                BombermanGame.setTable(py, px, cur);
             });
         }
         if (animate > 100000) {

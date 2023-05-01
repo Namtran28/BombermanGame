@@ -1,15 +1,20 @@
 package entities.player;
 
 import entities.bombs.Bomb;
+import entities.characters.Enemy;
+import entities.items.*;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
 import graphics.Sprite;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import entities.Entity;
 import main.BombermanGame;
 import playerInputs.KeyHandler;
+
+import static main.BombermanGame.getLevel;
 
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
@@ -20,6 +25,7 @@ public class Bomber extends Entity {
     private boolean speedItem = false;
     private boolean wallPass = false;
     private static int bombCounter = 1;
+    private static int bomb_size = 1;
     public static Entity bomb;
 
     public Bomber() {
@@ -90,6 +96,7 @@ public class Bomber extends Entity {
         checkDied(died);
         unDeadTime = Math.max(0, unDeadTime - 1);
         moving();
+        getItem();
         chooseSprite();
         move = false;
         if (keyHandler.isPressed(KeyCode.SPACE)) {
@@ -207,11 +214,9 @@ public class Bomber extends Entity {
     }
 
     private boolean beDamaged(int px, int py) {
-        for (Entity enemy : BombermanGame.getEnemies()) {
-            if (enemy.getXUnit() == px && enemy.getYUnit() == py && !isUnDead()) {
-                damaged();
-                return true;
-            }
+        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
+            damaged();
+            return true;
         }
         return false;
     }
@@ -220,58 +225,83 @@ public class Bomber extends Entity {
         if (died) System.exit(0);
     }
 
-    @Override
-    public int getXUnit() {
-        return (x + (75 * Sprite.SCALED_SIZE) / (2 * 100)) / Sprite.SCALED_SIZE;
-    }
-
-    @Override
-    public int getYUnit() {
-        return (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
-    }
+//    @Override
+//    public int getXUnit() {
+//        return (x + (75 * Sprite.SCALED_SIZE) / (2 * 100)) / Sprite.SCALED_SIZE;
+//    }
+//
+//    @Override
+//    public int getYUnit() {
+//        return (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+//    }
 
     public boolean isUnDead() {
         return unDeadTime > 0;
     }
 
-    public boolean isBomItem() {
-        return bomItem;
-    }
 
     public boolean canSetBomb() {
         if (BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Wall ||
                 BombermanGame.getTable()[getYUnit()][getXUnit()] instanceof Brick) {
             return false;
         }
-        return bombCounter > 0;
+        return Bomb.cnt < bombCounter;
     }
 
     public boolean isWallPass() {
         return wallPass;
     }
 
-    public boolean isSpeedItem() {
-        return speedItem;
-    }
-
     public boolean isFlamePass() {
         return flamePass;
     }
 
-    public boolean isFlameItem() {
-        return flameItem;
-    }
-
     public void setBomb() {
         if (canSetBomb()) {
-            bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), 1);
-            BombermanGame.addBomb(bomb);
-            BombermanGame.setTable(getYUnit(), getXUnit(), bomb);
-            bombCounter--;
+            Platform.runLater(() -> {
+                bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), bomb_size);
+                BombermanGame.addBomb(bomb);
+            });
         }
     }
 
-    public void reduceBombCounter() {
-        this.bombCounter++;
+
+    public void getItem() {
+        int px = getYUnit();
+        int py = getXUnit();
+        Entity e = BombermanGame.getTable()[px][py];
+        //System.out.println(px + " " + py + " " + e.getClass().getName());
+        if (e instanceof FlameItem) {
+            if (!((FlameItem) e).isPassed()) {
+                bomb_size++;
+            }
+            ((FlameItem) e).setIsPassed();
+        } else if (e instanceof SpeedItem) {
+            if (!((SpeedItem) e).isPassed()) {
+                STEP++;
+            }
+            ((SpeedItem) e).setIsPassed();
+        } else if (e instanceof BombItem) {
+            if (!((BombItem) e).isPassed()) {
+                bombCounter++;
+//                System.out.println("get Bomb " + bombCounter);
+            }
+            ((BombItem) e).setIsPassed();
+        } else if (e instanceof FlamePass) {
+            if (!((FlamePass) e).isPassed()) {
+                flamePass = true;
+            }
+            ((FlamePass) e).setIsPassed();
+        } else if (e instanceof WallPass) {
+            if (!((WallPass) e).isPassed()) {
+                wallPass = true;
+            }
+            ((WallPass) e).setIsPassed();
+        } else if (e instanceof Portal) {
+            if (BombermanGame.getEnemies().isEmpty()) {
+                BombermanGame.setLevel(getLevel() + 1);
+                BombermanGame.levelChanged = true;
+            }
+        }
     }
 }

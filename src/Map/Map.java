@@ -22,6 +22,8 @@ public class Map {
     private List<Entity> backGround = new ArrayList<>();
     private Bomber player = new Bomber();
     private Entity[][] table;
+    private Entity[][] moveEntitiesTable;
+    private Entity[][] itemsTable;
 
 
     public void readMap(int level) {
@@ -56,8 +58,9 @@ public class Map {
         Entity item;
         Entity object;
         Entity enemy;
-        int xp = 0, yp = 0;
         table = new Entity[rows][cols];
+        moveEntitiesTable = new Entity[rows][cols];
+        itemsTable = new Entity[rows][cols];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 item = null;
@@ -73,6 +76,7 @@ public class Map {
                 } else if (map[j][i] == 'p') {
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
                     player = new Bomber(i, j, Sprite.player_right.getFxImage(), 30, keyHandler);
+//                    moveEntitiesTable[j][i] = player;
                 } else if (map[j][i] == '1') {
                     enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage(), 1);
                 } else if (map[j][i] == '2') {
@@ -99,6 +103,7 @@ public class Map {
                 if (!(enemy == null)) {
                     enemies.add(enemy);
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
+                    moveEntitiesTable[j][i] = enemy;
                 }
                 if (!(object == null)) {
                     stillObjects.add(object);
@@ -106,6 +111,7 @@ public class Map {
                 }
                 if (!(item == null)) {
                     items.add(item);
+                    itemsTable[j][i] = item;
                     Entity brick = new Brick(i, j, Sprite.brick.getFxImage());
                     table[j][i] = brick;
                     stillObjects.add(brick);
@@ -147,5 +153,13 @@ public class Map {
 
     public Bomber getPlayer() {
         return player;
+    }
+
+    public Entity[][] getMoveEntitiesTable() {
+        return moveEntitiesTable;
+    }
+
+    public Entity[][] getItemsTable() {
+        return itemsTable;
     }
 }
