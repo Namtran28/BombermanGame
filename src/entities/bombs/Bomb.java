@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import main.BombermanGame;
+import sound.Sound;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -85,6 +87,7 @@ public class Bomb extends Entity {
         animate++;
         if (animate == 70) {
             exploded = true;
+            Sound.explosion.playSound();
             Platform.runLater(
                     () -> {
                         for (int c = 1; c <= size; c++) {

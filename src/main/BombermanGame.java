@@ -18,12 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import playerInputs.KeyHandler;
+import sound.Sound;
 
 public class BombermanGame extends Application {
 
     public static /*final*/ int WIDTH;
     public static /*final*/ int HEIGHT;
-
+    public static Sound music;
     private GraphicsContext gc;
     private Canvas canvas;
     private static List<Entity> enemies = new ArrayList<>(); // list of enemies.
@@ -43,6 +44,9 @@ public class BombermanGame extends Application {
     }
 
     public void load(Stage stage, int level) {
+        if (music != null) music.stopSound();
+        music = Sound.main_bgm;
+        music.loop();
         Map map = new Map(level);
         HEIGHT = map.getRows();
         WIDTH = map.getCols();

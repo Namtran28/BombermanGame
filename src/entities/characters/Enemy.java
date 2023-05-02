@@ -10,6 +10,7 @@ import entities.Entity;
 import algorithm.enemyFindPath;
 import javafx.util.Pair;
 import main.BombermanGame;
+import sound.Sound;
 
 import java.util.Random;
 
@@ -134,6 +135,9 @@ public abstract class Enemy extends Entity {
 
     protected void gotHurt(Sprite sprite) {
         hurtTick++;
+        if (hurtTick == 1) {
+            Sound.dieds.playSound();
+        }
         img = sprite.getFxImage();
         if (hurtTick >= 20 && died) {
             Platform.runLater(() -> {

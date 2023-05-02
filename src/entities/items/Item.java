@@ -11,6 +11,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import entities.Entity;
 import main.BombermanGame;
+import sound.Sound;
+
+import static main.BombermanGame.music;
 
 public class Item extends Entity {
 
@@ -26,6 +29,10 @@ public class Item extends Entity {
 
     public void setIsPassed() {
         this.isPassed = true;
+        Sound.collect_item.playSound();
+        music.stopSound();
+        music = Sound.powerup_get;
+        music.loop();
     }
 
     public boolean isPassed() {

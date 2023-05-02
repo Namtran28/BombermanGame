@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import entities.Entity;
 import main.BombermanGame;
 import playerInputs.KeyHandler;
+import sound.Sound;
 
 import static main.BombermanGame.getLevel;
 
@@ -82,6 +83,9 @@ public class Bomber extends Entity {
     @Override
     public void update(Scene scene) {
         if (beDamaged) {
+            if (hurtTick == 0) {
+                Sound.dieds.playSound();
+            }
             if (hurtTick == 30) {
                 beDamaged = false;
                 hurtTick = 0;
@@ -207,6 +211,9 @@ public class Bomber extends Entity {
                 }
             }
         }
+        if (move && animate % 15 == 0) {
+            Sound.move.playSound();
+        }
         int px = getXUnit();
         int py = getYUnit();
         if (beDamaged(px, py)) return;
@@ -262,6 +269,7 @@ public class Bomber extends Entity {
                 bomb = new Bomb(getXUnit(), getYUnit(), Sprite.bomb.getFxImage(), bomb_size);
                 BombermanGame.addBomb(bomb);
             });
+            Sound.place_bomb.playSound();
         }
     }
 
