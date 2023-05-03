@@ -25,13 +25,13 @@ public class BombermanGame extends Application {
     public static /*final*/ int WIDTH;
     public static /*final*/ int HEIGHT;
     public static Sound music;
-    private GraphicsContext gc;
-    private Canvas canvas;
+    private static GraphicsContext gc;
+    private static Canvas canvas;
     private static List<Entity> enemies = new ArrayList<>(); // list of enemies.
     private static List<Entity> stillObjects = new ArrayList<>(); // list of Wall, Brick and Bomb.
     private static List<Entity> items = new ArrayList<>(); // list items.
-    private List<Entity> backGround = new ArrayList<>(); // only Grass
-    private KeyHandler keyHandler;
+    private static List<Entity> backGround = new ArrayList<>(); // only Grass
+    private static KeyHandler keyHandler;
     private static Entity[][] table; // table contain Wall, Brick, Bomb, Item, Grass --- not contain Bomber and Enemy.
     private static Entity[][] moveEntitiesTable;
     private static Entity[][] itemsTable;
@@ -104,8 +104,8 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 if (levelChanged) {
-                    load(stage, level);
                     levelChanged = false;
+                    load(stage, level);
                 }
             }
         };
@@ -183,5 +183,19 @@ public class BombermanGame extends Application {
 
     public static int getLevel() {
         return level;
+    }
+    public static void setNull() {
+//        music = null;
+//        gc = null;
+//        canvas = null;
+//        enemies = null;
+//        stillObjects = null;
+//        items = null;
+//        backGround = null;
+//        keyHandler = null;
+//        table = null;
+//        moveEntitiesTable = null;
+//        itemsTable = null;
+//        player = null;
     }
 }

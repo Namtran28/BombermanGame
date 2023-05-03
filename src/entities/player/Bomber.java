@@ -309,6 +309,7 @@ public class Bomber extends Entity {
             if (BombermanGame.getEnemies().isEmpty()) {
                 BombermanGame.setLevel(getLevel() + 1);
                 BombermanGame.levelChanged = true;
+                BombermanGame.setNull();
             }
         }
     }
