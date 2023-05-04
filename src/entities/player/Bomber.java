@@ -20,14 +20,11 @@ import static main.BombermanGame.getLevel;
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
     private int unDeadTime = 0;
-    private boolean bomItem = false;
-    private boolean flameItem = false;
     private boolean flamePass = false;
-    private boolean speedItem = false;
     private boolean wallPass = false;
-    private static int bombCounter = 1;
-    private static int bomb_size = 1;
-    public static Entity bomb;
+    private int bombCounter = 1;
+    private int bomb_size = 1;
+    public Entity bomb;
 
     public Bomber() {
     }
@@ -37,11 +34,14 @@ public class Bomber extends Entity {
         this.life = life;
         this.keyHandler = keyHandler;
         died = false;
+        flamePass = false;
+        wallPass = false;
+        STEP = 2;
     }
 
     private void chooseSprite() {
         animate++;
-        if (animate > 10000) animate = 0;
+        if (animate > 100000) animate = 0;
         if (beDamaged) {
             img = Sprite.movingSprite(Sprite.player_dead1,
                     Sprite.player_dead2,
@@ -97,12 +97,12 @@ public class Bomber extends Entity {
             chooseSprite();
             return;
         }
+        move = false;
         checkDied(died);
         unDeadTime = Math.max(0, unDeadTime - 1);
         moving();
         getItem();
         chooseSprite();
-        move = false;
         if (keyHandler.isPressed(KeyCode.SPACE)) {
             setBomb();
         }
@@ -306,7 +306,7 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            if (BombermanGame.getEnemies().isEmpty()) {
+            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() < 3) {
                 BombermanGame.setLevel(getLevel() + 1);
                 BombermanGame.levelChanged = true;
                 BombermanGame.setNull();

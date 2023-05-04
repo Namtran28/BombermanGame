@@ -104,11 +104,11 @@ public class enemyFindPath {
             }
             nextStep = new Pair<>(px, py);
             while (px != x && py != y) {
-                //nextStep = new Pair<>(px, py);
+                nextStep = new Pair<>(px, py);
                 int tmp = px;
                 px = pathTo[tmp][py].getKey();
                 py = pathTo[tmp][py].getValue();
-                nextStep = new Pair<>(px, py);
+//                nextStep = new Pair<>(px, py);
             }
         } catch (Exception e) {
 //            int id = new Random().nextInt(4);

@@ -25,6 +25,7 @@ public class BombermanGame extends Application {
     public static /*final*/ int WIDTH;
     public static /*final*/ int HEIGHT;
     public static Sound music;
+    public static long FPS_GAME = 1080 / 60;
     private static GraphicsContext gc;
     private static Canvas canvas;
     private static List<Entity> enemies = new ArrayList<>(); // list of enemies.
@@ -47,6 +48,7 @@ public class BombermanGame extends Application {
         if (music != null) music.stopSound();
         music = Sound.main_bgm;
         music.loop();
+        Bomb.cnt = 0;
         Map map = new Map(level);
         HEIGHT = map.getRows();
         WIDTH = map.getCols();
@@ -69,7 +71,6 @@ public class BombermanGame extends Application {
         table = map.getTable();
         moveEntitiesTable = map.getMoveEntitiesTable();
         itemsTable = map.getItemsTable();
-        Bomb.cnt = 0;
         player = map.getPlayer();
 
         // Add scene vao stage
@@ -81,10 +82,30 @@ public class BombermanGame extends Application {
         stage.show();
 
         AnimationTimer timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+
             @Override
-            public void handle(long l) {
-                render();
-                update(scene);
+            public void handle(long now) {
+                if (levelChanged) {
+                    stop();
+                    return;
+                } else {
+                    render();
+                    update(scene);
+                }
+                long frameTime = (now - lastUpdate) / 1000000;
+                //System.out.println(frameTime);
+                if (frameTime < FPS_GAME) {
+                    try {
+                        if (level > 0) Thread.sleep(FPS_GAME - (int) (frameTime / 3));
+                        else {
+                            if (frameTime * 3 < FPS_GAME) Thread.sleep(FPS_GAME - frameTime * 3);
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                lastUpdate = System.nanoTime();
             }
         };
         timer.start();
@@ -102,7 +123,7 @@ public class BombermanGame extends Application {
     public void start(Stage stage) {
         AnimationTimer test = new AnimationTimer() {
             @Override
-            public void handle(long l) {
+            public void handle(long ns) {
                 if (levelChanged) {
                     levelChanged = false;
                     load(stage, level);

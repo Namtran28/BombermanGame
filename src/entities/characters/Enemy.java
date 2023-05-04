@@ -47,10 +47,10 @@ public abstract class Enemy extends Entity {
     public void moving() {
         BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
         chooseDirectionRandom();
-//        if (this instanceof Oneal) {
-//            chooseDirection();
-//            chooseDirectionRandom();
-//        }
+        if (this instanceof Oneal) {
+            if (animate % 44 == 0) chooseDirection();
+            //chooseDirectionRandom();
+        }
 //        BombermanGame.setTable(getYUnit(), getXUnit(), null);
         if (direction == 'D') {
             if (checkWall(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkWall(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
