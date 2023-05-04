@@ -42,7 +42,7 @@ public class Balloom extends Enemy {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         if (died) {
             gotHurt(Sprite.balloom_dead);
             chooseSprite();

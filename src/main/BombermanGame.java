@@ -134,15 +134,15 @@ public class BombermanGame extends Application {
     }
 
     public void update(Scene scene) {
-        player.update(scene);
+        player.update();
         for (Entity enemy : enemies) {
-            enemy.update(scene);
+            enemy.update();
         }
         for (Entity item : items) {
-            item.update(scene);
+            item.update();
         }
         for (Entity entity : stillObjects) {
-            entity.update(scene);
+            entity.update();
         }
     }
 

@@ -84,7 +84,7 @@ public class Bomb extends Entity {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         animate++;
         if (animate == 70) {
             exploded = true;

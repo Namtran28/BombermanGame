@@ -10,7 +10,7 @@ public class FlameItem extends Item {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         setChange(Sprite.powerup_flames.getFxImage());
     }
 }

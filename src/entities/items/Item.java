@@ -23,7 +23,7 @@ public class Item extends Entity {
     protected boolean isPassed = false;
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
 
     }
 

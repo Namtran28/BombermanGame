@@ -70,7 +70,7 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
 
-    public abstract void update(Scene scene);
+    public abstract void update();
 
     public static Entity getEntity(int x, int y) {
         return BombermanGame.getTable()[x][y];

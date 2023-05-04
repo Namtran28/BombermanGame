@@ -10,7 +10,7 @@ public class WallPass extends Item {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         setChange(Sprite.powerup_wallpass.getFxImage());
     }
 }

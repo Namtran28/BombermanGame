@@ -42,7 +42,7 @@ public class Kondoria extends Enemy {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         if (died) {
             gotHurt(Sprite.kondoria_dead);
             chooseSprite();

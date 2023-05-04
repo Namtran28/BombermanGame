@@ -33,7 +33,7 @@ public class Flame extends Entity {
         img = sprite.getFxImage();
     }
     @Override
-    public void update(Scene scene) {
+    public void update() {
         animate++;
         if (animate == 13) {
             Platform.runLater(() -> {
