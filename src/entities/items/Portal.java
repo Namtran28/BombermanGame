@@ -12,7 +12,7 @@ public class Portal extends Item {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         setChange(Sprite.portal.getFxImage());
     }
 }

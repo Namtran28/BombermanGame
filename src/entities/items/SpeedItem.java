@@ -10,7 +10,7 @@ public class SpeedItem extends Item {
     }
 
     @Override
-    public void update(Scene scene) {
+    public void update() {
         setChange(Sprite.powerup_speed.getFxImage());
     }
 }
