@@ -47,6 +47,9 @@ public class BombermanGame extends Application {
     private static int level = 0;
     public static boolean levelChanged = true;
     private boolean running = true;
+    private boolean menu = true;
+    private boolean play = true;
+    private boolean exit = true;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -82,7 +85,9 @@ public class BombermanGame extends Application {
         start_button.setOnMouseExited(e -> start_button.setEffect(null));
         start_button.setOnAction(event -> {
             gameFunction = FUNCTION.PLAY;
-            play(stage);
+            Platform.runLater(() -> {
+                play(stage);
+            });
         });
 
 //      AI start
@@ -151,26 +156,33 @@ public class BombermanGame extends Application {
     }
 
     public void play(Stage stage) {
-        if (levelChanged) {
-            levelChanged = false;
-            load(stage, level);
-        }
+        AnimationTimer playTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (levelChanged) {
+                    levelChanged = false;
+                    load(stage, level);
+                }
+            }
+        };
+        playTimer.start();
     }
 
     public void gameLoop(Stage stage) {
         if (gameFunction == FUNCTION.MENU) {
-//            Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 menu(stage);
-//            });
+            });
         } else if (gameFunction == FUNCTION.PLAY) {
-//            Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 play(stage);
-//            });
+            });
         } else if (gameFunction == FUNCTION.EXIT) {
             Platform.exit();
-        } else {
+        }/* else {
+//            System.out.println("error");
             throw new IllegalArgumentException("Invalid game state");
-        }
+        }*/
     }
 
     public void load(Stage stage, int level) {
@@ -223,7 +235,7 @@ public class BombermanGame extends Application {
                     stop();
                     return;
                 } else {
-                    render();
+                    render(stage);
                     update();
                 }
                 long frameTime = (now - lastUpdate) / 1000000;
@@ -251,8 +263,8 @@ public class BombermanGame extends Application {
             public void handle(long ns) {
 //                play(stage);
                 if (running) {
-                    gameLoop(stage);
                     running = false;
+                    gameLoop(stage);
                 }
                 if (gameFunction == FUNCTION.EXIT) {
                     Platform.exit();
@@ -275,13 +287,15 @@ public class BombermanGame extends Application {
         }
     }
 
-    public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        backGround.forEach((g -> g.render(gc)));
-        items.forEach(g -> g.render(gc));
-        stillObjects.forEach(g -> g.render(gc));
-        enemies.forEach(g -> g.render(gc));
-        player.render(gc);
+    public void render(Stage stage) {
+        if (gameFunction == FUNCTION.PLAY) {
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            backGround.forEach((g -> g.render(gc)));
+            items.forEach(g -> g.render(gc));
+            stillObjects.forEach(g -> g.render(gc));
+            enemies.forEach(g -> g.render(gc));
+            player.render(gc);
+        }
     }
 
 

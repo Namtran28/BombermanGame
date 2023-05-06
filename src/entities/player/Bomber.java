@@ -7,15 +7,12 @@ import entities.tiles.Brick;
 import entities.tiles.Wall;
 import graphics.Sprite;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import entities.Entity;
 import main.BombermanGame;
 import playerInputs.KeyHandler;
 import sound.Sound;
-
-import static main.BombermanGame.getLevel;
 
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
@@ -307,7 +304,8 @@ public class Bomber extends Entity {
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
             if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() < 3) {
-                BombermanGame.setLevel(getLevel() + 1);
+                BombermanGame.setLevel(BombermanGame.getLevel() + 1);
+//                Sound.ending.playSound();
                 BombermanGame.levelChanged = true;
                 BombermanGame.setNull();
             }
