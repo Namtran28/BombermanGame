@@ -314,7 +314,7 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() <= 1) {
+            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() <= 3) {
                 int _level = BombermanGame.getLevel();
                 if (_level == 3) {
                     BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
