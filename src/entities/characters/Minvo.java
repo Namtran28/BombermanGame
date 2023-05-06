@@ -43,7 +43,7 @@ public class Minvo extends Enemy {
 
     @Override
     public void update() {
-        if (died) {
+        if (beDamaged) {
             gotHurt(Sprite.minvo_dead);
             chooseSprite();
             return;

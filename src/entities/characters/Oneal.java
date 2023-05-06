@@ -43,7 +43,7 @@ public class Oneal extends Enemy {
 
     @Override
     public void update() {
-        if (died) {
+        if (beDamaged) {
             gotHurt(Sprite.oneal_dead);
             chooseSprite();
             return;
