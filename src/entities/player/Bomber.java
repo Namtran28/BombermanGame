@@ -35,7 +35,7 @@ public class Bomber extends Entity {
         flamePass = false;
         wallPass = false;
         STEP = 2;
-//        _life = life;
+        _life = life;
     }
 
     private void chooseSprite() {
@@ -81,7 +81,7 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-//        _life = this.life;
+        _life = this.life;
         if (beDamaged) {
             if (hurtTick == 0) {
                 Sound.dieds.playSound();
@@ -106,6 +106,7 @@ public class Bomber extends Entity {
         if (keyHandler.isPressed(KeyCode.SPACE)) {
             setBomb();
         }
+        System.out.println(this.life);
     }
 
     private void moving() {
@@ -214,13 +215,12 @@ public class Bomber extends Entity {
         if (move && animate % 15 == 0) {
             Sound.move.playSound();
         }
-        int px = getXUnit();
-        int py = getYUnit();
-        if (beDamaged(px, py)) life--;
+
+        if (beDamaged()) return;
         //if (!(BombermanGame.getTable()[py][px] instanceof Enemy)) BombermanGame.setTable(py, px, this);
     }
 
-    private boolean beDamaged(int px, int py) {
+    private boolean beDamaged() {
         if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
             damaged();
             return true;
@@ -229,10 +229,7 @@ public class Bomber extends Entity {
     }
 
     private void checkDied(boolean died) {
-        if (died){
-            BombermanGame.gameFunction = BombermanGame.FUNCTION.REPLAY;
-            BombermanGame.replay = true;
-        }
+        if (died) BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
     }
 
 //    @Override
@@ -277,8 +274,7 @@ public class Bomber extends Entity {
     }
 
     public int getLife() {
-//        return _life;
-        return life;
+        return _life;
     }
 
     public void getItem() {
@@ -313,17 +309,11 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() <= 1) {
-                int _level = BombermanGame.getLevel() + 1;
-                if (_level == 2) {
-                    BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
-                    BombermanGame.endGame = true;
-                    return;
-                }
-                BombermanGame.setLevel(_level);
+            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() < 3) {
+                BombermanGame.setLevel(BombermanGame.getLevel() + 1);
 //                Sound.ending.playSound();
                 BombermanGame.levelChanged = true;
-//                BombermanGame.setNull();
+                BombermanGame.setNull();
             }
         }
     }

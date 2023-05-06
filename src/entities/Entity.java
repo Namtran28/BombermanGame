@@ -77,7 +77,7 @@ public abstract class Entity {
     }
 
     public void damaged() {
-        if (beDamaged) life--;
+        if (!beDamaged) life--;
         beDamaged = true;
         if (life == 0) died = true;
     }
