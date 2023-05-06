@@ -85,6 +85,8 @@ public class Map {
                     enemy = new Doll(i, j, Sprite.doll_left1.getFxImage(), 2);
                 } else if (map[j][i] == '4') {
                     enemy = new Kondoria(i, j, Sprite.kondoria_left1.getFxImage(), 1);
+                } else if (map[j][i] == '5') {
+                    enemy = new Minvo(i, j, Sprite.minvo_left1.getFxImage(), 2);
                 } else if (map[j][i] == 'b') {
                     item = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
                 } else if (map[j][i] == 'f') {
@@ -95,6 +97,8 @@ public class Map {
                     item = new FlamePass(i, j, Sprite.powerup_flamepass.getFxImage());
                 } else if (map[j][i] == 'w') {
                     item = new WallPass(i, j, Sprite.powerup_wallpass.getFxImage());
+                } else if (map[j][i] == 'd') {
+                    item = new Detonator(i, j, Sprite.powerup_detonator.getFxImage());
                 } else {
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
                 }

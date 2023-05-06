@@ -4,9 +4,9 @@ import graphics.Sprite;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-public class Doll extends Enemy {
-    public Doll(int x, int y, Image image, int life) {
-        super(x, y, image, life);
+public class Minvo extends Enemy {
+    public Minvo(int x, int y, Image img, int life) {
+        super( x, y, img, life);
     }
 
     @Override
@@ -14,7 +14,7 @@ public class Doll extends Enemy {
         animate++;
         if (animate > 100000) animate = 0;
         if (died) {
-            img = Sprite.movingSprite(Sprite.doll_dead,
+            img = Sprite.movingSprite(Sprite.minvo_dead,
                     Sprite.mob_dead2,
                     Sprite.mob_dead3,
                     animate,
@@ -24,16 +24,16 @@ public class Doll extends Enemy {
         Sprite sprite;
         switch (direction) {
             case 'D', 'L' -> {
-                sprite = Sprite.doll_left1;
+                sprite = Sprite.minvo_left1;
                 if (move) {
-                    sprite = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left3, animate, 20);
+                    sprite = Sprite.movingSprite(Sprite.minvo_left3, Sprite.minvo_left2, Sprite.minvo_left3, animate, 20);
                 }
             }
 
             default -> {
-                sprite = Sprite.doll_right1;
+                sprite = Sprite.minvo_right1;
                 if (move) {
-                    sprite = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right3, animate, 20);
+                    sprite = Sprite.movingSprite(Sprite.minvo_right1, Sprite.minvo_right2, Sprite.minvo_right3, animate, 20);
                 }
             }
         }
@@ -43,8 +43,8 @@ public class Doll extends Enemy {
 
     @Override
     public void update() {
-        if (beDamaged) {
-            gotHurt(Sprite.doll_dead);
+        if (died) {
+            gotHurt(Sprite.minvo_dead);
             chooseSprite();
             return;
         }

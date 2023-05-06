@@ -46,9 +46,9 @@ public abstract class Enemy extends Entity {
 
     public void moving() {
         BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
-        chooseDirectionRandom();
-        if (this instanceof Oneal) {
-            if (animate % 44 == 0) chooseDirection();
+        if (!(this instanceof Minvo)) chooseDirectionRandom();
+        if (this instanceof Oneal || this instanceof Minvo) {
+            chooseDirection();
             //chooseDirectionRandom();
         }
 //        BombermanGame.setTable(getYUnit(), getXUnit(), null);
