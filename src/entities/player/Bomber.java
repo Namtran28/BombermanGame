@@ -232,8 +232,8 @@ public class Bomber extends Entity {
 
     private void checkDied(boolean died) {
         if (died) {
-            BombermanGame.gameFunction = BombermanGame.FUNCTION.REPLAY;
-            BombermanGame.replay = true;
+                BombermanGame.gameFunction = BombermanGame.FUNCTION.REPLAY;
+                BombermanGame.replay = true;
         }
     }
 
@@ -315,13 +315,13 @@ public class Bomber extends Entity {
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
             if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() <= 1) {
-                int _level = BombermanGame.getLevel() + 1;
-                if (_level == 2) {
+                int _level = BombermanGame.getLevel();
+                if (_level == 3) {
                     BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
                     BombermanGame.endGame = true;
                     return;
                 }
-                BombermanGame.setLevel(_level);
+                BombermanGame.setLevel(_level + 1);
 //                Sound.ending.playSound();
                 BombermanGame.levelChanged = true;
                 BombermanGame.setNull();

@@ -90,27 +90,11 @@ public class BombermanGame extends Application {
         start_button.setOnMouseExited(e -> start_button.setEffect(null));
         start_button.setOnAction(event -> {
             gameFunction = FUNCTION.PLAY;
+            levelChanged = true;
             Platform.runLater(() -> {
                 play(stage);
             });
         });
-
-//      AI start
-//        AI_button.setStyle("-fx-background-color: transparent; ");
-//        AI_button.setPrefSize(166, 66);
-//        AI_button.setTranslateX(5);
-//        AI_button.setTranslateY(5 + 66 + 10);
-//        try {
-//            stream = new FileInputStream("res/AI_button.png");
-//        } catch (Exception e) {
-//            e.getMessage();
-//        }
-//        img = new Image(stream);
-//        view = new ImageView();
-//        view.setFitHeight(66);
-//        view.setFitWidth(166);
-//        view.setImage(img);
-//        AI_button.setGraphic(view);
 
 //      Exit
         exit_button.setStyle("-fx-background-color: transparent; ");
@@ -208,14 +192,15 @@ public class BombermanGame extends Application {
         end_button.setOnMouseExited(e -> end_button.setEffect(null));
         end_button.setOnAction(event -> {
             if (gameFunction == FUNCTION.END) {
-                gameFunction = FUNCTION.MENU;
                 level = 0;
+                gameFunction = FUNCTION.MENU;
                 running = true;
-                levelChanged = true;
-            }
-            if (gameFunction == FUNCTION.REPLAY) {
+            } else if (gameFunction == FUNCTION.REPLAY) {
                 gameFunction = FUNCTION.PLAY;
-                play(stage);
+                Platform.runLater(() -> {
+                    levelChanged = true;
+                    play(stage);
+                });
             }
         });
 
@@ -247,18 +232,16 @@ public class BombermanGame extends Application {
             Platform.runLater(() -> {
                 menu(stage);
             });
-//            menu(stage);
         } else if (gameFunction == FUNCTION.PLAY) {
             Platform.runLater(() -> {
                 play(stage);
             });
-//            play(stage);
         } else if (gameFunction == FUNCTION.EXIT) {
             Platform.exit();
-        }/* else {
+        } else {
 //            System.out.println("error");
             throw new IllegalArgumentException("Invalid game state");
-        }*/
+        }
     }
 
     public void load(Stage stage, int level) {
@@ -307,10 +290,10 @@ public class BombermanGame extends Application {
 
             @Override
             public void handle(long now) {
-                if (levelChanged) {
+                if (levelChanged || endGame || replay) {
                     stop();
                     return;
-                } else if (gameFunction == FUNCTION.MENU) {
+                } else if (gameFunction == FUNCTION.MENU || gameFunction == FUNCTION.REPLAY || gameFunction == FUNCTION.END) {
                     stop();
                     return;
                 } else {
@@ -342,8 +325,10 @@ public class BombermanGame extends Application {
             public void handle(long ns) {
 //                play(stage);
                 if (running) {
-                    gameLoop(stage);
                     running = false;
+                    Platform.runLater(() -> {
+                        gameLoop(stage);
+                    });
                 }
                 if (gameFunction == FUNCTION.EXIT) {
                     Platform.exit();
@@ -405,14 +390,17 @@ public class BombermanGame extends Application {
         }
         if (gameFunction == FUNCTION.END) {
             if (endGame) {
-                end(stage);
                 endGame = false;
+                Platform.runLater(() -> {
+                    end(stage);
+                });
             }
-        }
-        if (gameFunction == FUNCTION.REPLAY) {
+        } else if (gameFunction == FUNCTION.REPLAY) {
             if(replay) {
-                end(stage);
                 replay = false;
+                Platform.runLater(() -> {
+                    end(stage);
+                });
             }
         }
     }
