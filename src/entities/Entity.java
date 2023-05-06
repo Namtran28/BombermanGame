@@ -22,7 +22,7 @@ public abstract class Entity {
     protected char direction;
     protected char[] directions = {'L','R','U','D','H','V'};
     protected boolean move = false;
-    protected int STEP = 1;
+    protected int STEP = 2;
     protected int animate = 0;
     protected int life;
     protected boolean died = false;

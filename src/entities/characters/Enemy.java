@@ -139,11 +139,15 @@ public abstract class Enemy extends Entity {
             Sound.dieds.playSound();
         }
         img = sprite.getFxImage();
-        if (hurtTick >= 20 && died) {
-            Platform.runLater(() -> {
-                BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
-                BombermanGame.removeEnemy(this);
-            });
+        if (hurtTick >= 20) {
+            beDamaged = false;
+            hurtTick = 0;
+            if (died) {
+                Platform.runLater(() -> {
+                    BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
+                    BombermanGame.removeEnemy(this);
+                });
+            }
         }
     }
 }

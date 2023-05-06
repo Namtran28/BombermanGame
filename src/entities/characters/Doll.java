@@ -43,7 +43,8 @@ public class Doll extends Enemy {
 
     @Override
     public void update() {
-        if (died) {
+        System.out.println(life);
+        if (beDamaged) {
             gotHurt(Sprite.doll_dead);
             chooseSprite();
             return;
