@@ -216,7 +216,9 @@ public class Bomber extends Entity {
             Sound.move.playSound();
         }
 
-        if (beDamaged()) return;
+        if (beDamaged()) {
+            return;
+        }
         //if (!(BombermanGame.getTable()[py][px] instanceof Enemy)) BombermanGame.setTable(py, px, this);
     }
 
@@ -229,7 +231,10 @@ public class Bomber extends Entity {
     }
 
     private void checkDied(boolean died) {
-        if (died) BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
+        if (died) {
+            BombermanGame.gameFunction = BombermanGame.FUNCTION.REPLAY;
+            BombermanGame.replay = true;
+        }
     }
 
 //    @Override
@@ -274,7 +279,7 @@ public class Bomber extends Entity {
     }
 
     public int getLife() {
-        return _life;
+        return life;
     }
 
     public void getItem() {
@@ -309,8 +314,14 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() < 3) {
-                BombermanGame.setLevel(BombermanGame.getLevel() + 1);
+            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() <= 1) {
+                int _level = BombermanGame.getLevel() + 1;
+                if (_level == 2) {
+                    BombermanGame.gameFunction = BombermanGame.FUNCTION.END;
+                    BombermanGame.endGame = true;
+                    return;
+                }
+                BombermanGame.setLevel(_level);
 //                Sound.ending.playSound();
                 BombermanGame.levelChanged = true;
                 BombermanGame.setNull();

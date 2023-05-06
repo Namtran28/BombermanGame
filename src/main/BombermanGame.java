@@ -209,6 +209,7 @@ public class BombermanGame extends Application {
         end_button.setOnAction(event -> {
             if (gameFunction == FUNCTION.END) {
                 gameFunction = FUNCTION.MENU;
+                level = 0;
                 running = true;
                 levelChanged = true;
             }
