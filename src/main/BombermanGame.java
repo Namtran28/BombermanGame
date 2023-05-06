@@ -48,6 +48,8 @@ public class BombermanGame extends Application {
     public static Bomber player;
     private static int level = 0;
     public static boolean levelChanged = true;
+    public static boolean endGame = false;
+    public static boolean replay = false;
     private boolean running = true;
     private Group root = null;
     private Text textLife = null;
@@ -171,15 +173,85 @@ public class BombermanGame extends Application {
         playTimer.start();
     }
 
+    public void end(Stage stage) {
+        InputStream stream = null;
+        if (music != null) music.stopSound();
+        Button end_button = new Button();
+        end_button.setStyle("-fx-background-color: transparent; ");
+        end_button.setPrefSize(166, 66);
+        if (gameFunction == FUNCTION.END) {
+            music = Sound.stage_clear;
+            music.playSound();
+            try {
+                stream = new FileInputStream("res/youwin.png");
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        } else if (gameFunction == FUNCTION.REPLAY) {
+            music = Sound.miss;
+            music.playSound();
+            try {
+                stream = new FileInputStream("res/replay.png");
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+        Image img = new Image(stream);
+        ImageView view = new ImageView();
+        view.setFitHeight(60);
+        view.setFitWidth(170);
+        view.setImage(img);
+        end_button.setGraphic(view);
+        end_button.setTranslateX(Sprite.SCALED_SIZE * 15 - 170 / 2);
+        end_button.setTranslateY(Sprite.SCALED_SIZE * 10 - 10);
+        end_button.setOnMouseEntered(e -> end_button.setEffect(new DropShadow()));
+        end_button.setOnMouseExited(e -> end_button.setEffect(null));
+        end_button.setOnAction(event -> {
+            if (gameFunction == FUNCTION.END) {
+                gameFunction = FUNCTION.MENU;
+                running = true;
+                levelChanged = true;
+            }
+            if (gameFunction == FUNCTION.REPLAY) {
+                gameFunction = FUNCTION.PLAY;
+                play(stage);
+            }
+        });
+
+        root = new Group();
+        try {
+            stream = new FileInputStream("res/endgame.jpeg");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setX(0);
+        imageView.setY(0);
+        imageView.setFitHeight(Sprite.SCALED_SIZE * 15);
+        imageView.setFitWidth(Sprite.SCALED_SIZE * 30);
+
+        root.getChildren().add(imageView);
+        root.getChildren().add(end_button);
+        Scene scene = new Scene(root, Sprite.SCALED_SIZE * 30, Sprite.SCALED_SIZE * 15);
+        stage.setTitle("Bomberman L&N");
+        stage.setScene(scene);
+        stage.getIcons().add(new Image("/Mew.jpg"));
+        stage.show();
+    }
+
     public void gameLoop(Stage stage) {
         if (gameFunction == FUNCTION.MENU) {
             Platform.runLater(() -> {
                 menu(stage);
             });
+//            menu(stage);
         } else if (gameFunction == FUNCTION.PLAY) {
             Platform.runLater(() -> {
                 play(stage);
             });
+//            play(stage);
         } else if (gameFunction == FUNCTION.EXIT) {
             Platform.exit();
         }/* else {
@@ -242,7 +314,7 @@ public class BombermanGame extends Application {
                     return;
                 } else {
                     update();
-                    render();
+                    render(stage);
                 }
                 long frameTime = (now - lastUpdate) / 1000000;
 //                System.out.println(frameTime);
@@ -269,8 +341,8 @@ public class BombermanGame extends Application {
             public void handle(long ns) {
 //                play(stage);
                 if (running) {
-                    running = false;
                     gameLoop(stage);
+                    running = false;
                 }
                 if (gameFunction == FUNCTION.EXIT) {
                     Platform.exit();
@@ -293,7 +365,8 @@ public class BombermanGame extends Application {
         }
     }
 
-    public void render() {
+    public void render(Stage stage) {
+        if(gameFunction == FUNCTION.PLAY) {
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             backGround.forEach((g -> g.render(gc)));
             items.forEach(g -> g.render(gc));
@@ -301,9 +374,12 @@ public class BombermanGame extends Application {
             enemies.forEach(g -> g.render(gc));
             player.render(gc);
 
-            /*this.*/root.getChildren().remove(textLife);
-            /*this.*/root.getChildren().remove(textEnemy);
-            /*this.*/root.getChildren().remove(textLevel);
+            /*this.*/
+            root.getChildren().remove(textLife);
+            /*this.*/
+            root.getChildren().remove(textEnemy);
+            /*this.*/
+            root.getChildren().remove(textLevel);
 
             Font font = new Font("pixels", 20);
 
@@ -319,9 +395,25 @@ public class BombermanGame extends Application {
             textLevel.setFont(font);
             textLevel.setFill(Color.BLACK);
 
-            /*this.*/root.getChildren().add(textLevel);
-            /*this.*/root.getChildren().add(textLife);
-            /*this.*/root.getChildren().add(textEnemy);
+            /*this.*/
+            root.getChildren().add(textLevel);
+            /*this.*/
+            root.getChildren().add(textLife);
+            /*this.*/
+            root.getChildren().add(textEnemy);
+        }
+        if (gameFunction == FUNCTION.END) {
+            if (endGame) {
+                end(stage);
+                endGame = false;
+            }
+        }
+        if (gameFunction == FUNCTION.REPLAY) {
+            if(replay) {
+                end(stage);
+                replay = false;
+            }
+        }
     }
 
 
@@ -401,6 +493,6 @@ public class BombermanGame extends Application {
     }
 
     public enum FUNCTION {
-        MENU, END, PLAY, EXIT
+        MENU, END, PLAY, EXIT, REPLAY
     }
 }
