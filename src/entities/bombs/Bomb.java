@@ -2,6 +2,7 @@ package entities.bombs;
 
 import entities.Entity;
 import entities.items.Item;
+import entities.items.Portal;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
 import graphics.Sprite;
@@ -68,7 +69,7 @@ public class Bomb extends Entity {
                 }
             }
         }
-        if (cur instanceof Item) ((Item) cur).setIsPassed();
+        if (cur instanceof Item && !(cur instanceof Portal)) ((Item) cur).setIsPassed();
         if (cur instanceof Bomb && !((Bomb) cur).isExploded()) ((Bomb) cur).setExplode();
         if (BombermanGame.player.getXUnit() == i &&
                 BombermanGame.player.getYUnit() == j &&

@@ -1,13 +1,11 @@
 package entities.player;
 
 import entities.bombs.Bomb;
-import entities.characters.Enemy;
 import entities.items.*;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
 import graphics.Sprite;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import entities.Entity;
@@ -15,19 +13,15 @@ import main.BombermanGame;
 import playerInputs.KeyHandler;
 import sound.Sound;
 
-import static main.BombermanGame.getLevel;
-
 public class Bomber extends Entity {
     private KeyHandler keyHandler;
     private int unDeadTime = 0;
-    private boolean bomItem = false;
-    private boolean flameItem = false;
     private boolean flamePass = false;
-    private boolean speedItem = false;
     private boolean wallPass = false;
-    private static int bombCounter = 1;
-    private static int bomb_size = 1;
-    public static Entity bomb;
+    private int bombCounter = 1;
+    private int bomb_size = 1;
+    public Entity bomb;
+    private int _life;
 
     public Bomber() {
     }
@@ -37,11 +31,15 @@ public class Bomber extends Entity {
         this.life = life;
         this.keyHandler = keyHandler;
         died = false;
+        flamePass = false;
+        wallPass = false;
+        STEP = 2;
+        _life = life;
     }
 
     private void chooseSprite() {
         animate++;
-        if (animate > 10000) animate = 0;
+        if (animate > 100000) animate = 0;
         if (beDamaged) {
             img = Sprite.movingSprite(Sprite.player_dead1,
                     Sprite.player_dead2,
@@ -82,6 +80,7 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
+        _life = this.life;
         if (beDamaged) {
             if (hurtTick == 0) {
                 Sound.dieds.playSound();
@@ -97,12 +96,12 @@ public class Bomber extends Entity {
             chooseSprite();
             return;
         }
+        move = false;
         checkDied(died);
         unDeadTime = Math.max(0, unDeadTime - 1);
         moving();
         getItem();
         chooseSprite();
-        move = false;
         if (keyHandler.isPressed(KeyCode.SPACE)) {
             setBomb();
         }
@@ -122,7 +121,7 @@ public class Bomber extends Entity {
             }
             //
             if (!(checkWall(x - STEP, y + 4))) {
-                if ((double) ((y + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
+                if ((double)((y + 4) * 1.0 / Sprite.SCALED_SIZE) > ((int)((y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'D';
                     move = true;
                     y++;
@@ -214,19 +213,16 @@ public class Bomber extends Entity {
         if (move && animate % 15 == 0) {
             Sound.move.playSound();
         }
-        int px = getXUnit();
-        int py = getYUnit();
-        if (beDamaged(px, py)) return;
         //if (!(BombermanGame.getTable()[py][px] instanceof Enemy)) BombermanGame.setTable(py, px, this);
     }
 
-    private boolean beDamaged(int px, int py) {
-        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
-            damaged();
-            return true;
-        }
-        return false;
-    }
+//    private boolean beDamaged(int px, int py) {
+//        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
+//            damaged();
+//            return true;
+//        }
+//        return false;
+//    }
 
     private void checkDied(boolean died) {
         if (died) System.exit(0);
@@ -273,6 +269,9 @@ public class Bomber extends Entity {
         }
     }
 
+    public int getLife() {
+        return _life;
+    }
 
     public void getItem() {
         int px = getYUnit();
@@ -306,9 +305,11 @@ public class Bomber extends Entity {
             }
             ((WallPass) e).setIsPassed();
         } else if (e instanceof Portal) {
-            if (BombermanGame.getEnemies().isEmpty()) {
-                BombermanGame.setLevel(getLevel() + 1);
+            if (BombermanGame.getEnemies().isEmpty() && BombermanGame.getLevel() < 3) {
+                BombermanGame.setLevel(BombermanGame.getLevel() + 1);
+//                Sound.ending.playSound();
                 BombermanGame.levelChanged = true;
+                BombermanGame.setNull();
             }
         }
     }
