@@ -201,7 +201,7 @@ public class BombermanGame extends Application {
         HEIGHT = map.getRows();
         WIDTH = map.getCols();
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 30);
         gc = canvas.getGraphicsContext2D();
 
         // Tao this.root container
@@ -301,9 +301,9 @@ public class BombermanGame extends Application {
             enemies.forEach(g -> g.render(gc));
             player.render(gc);
 
-            this.root.getChildren().remove(textLife);
-            this.root.getChildren().remove(textEnemy);
-            this.root.getChildren().remove(textLevel);
+            /*this.*/root.getChildren().remove(textLife);
+            /*this.*/root.getChildren().remove(textEnemy);
+            /*this.*/root.getChildren().remove(textLevel);
 
             Font font = new Font("pixels", 20);
 
@@ -319,9 +319,9 @@ public class BombermanGame extends Application {
             textLevel.setFont(font);
             textLevel.setFill(Color.BLACK);
 
-            this.root.getChildren().add(textLevel);
-            this.root.getChildren().add(textLife);
-            this.root.getChildren().add(textEnemy);
+            /*this.*/root.getChildren().add(textLevel);
+            /*this.*/root.getChildren().add(textLife);
+            /*this.*/root.getChildren().add(textEnemy);
     }
 
 
