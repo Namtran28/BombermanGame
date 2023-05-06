@@ -22,6 +22,7 @@ import entities.Entity;
 import graphics.Sprite;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 import java.util.List;
 import playerInputs.KeyHandler;
@@ -145,11 +146,11 @@ public class BombermanGame extends Application {
         imageView.setFitHeight(Sprite.SCALED_SIZE * 15);
         imageView.setFitWidth(Sprite.SCALED_SIZE * 30);
 
-        root = new Group(imageView);
-        root.getChildren().add(start_button);
-//        root.getChildren().add(AI_button);
-        root.getChildren().add(exit_button);
-        Scene scene = new Scene(root, Sprite.SCALED_SIZE * 30, Sprite.SCALED_SIZE * 15);
+        this.root = new Group(imageView);
+        this.root.getChildren().add(start_button);
+//        this.root.getChildren().add(AI_button);
+        this.root.getChildren().add(exit_button);
+        Scene scene = new Scene(this.root, Sprite.SCALED_SIZE * 30, Sprite.SCALED_SIZE * 15);
         stage.setTitle("Bomberman L&N");
         stage.setScene(scene);
         stage.getIcons().add(new Image("/Mew.jpg"));
@@ -188,6 +189,10 @@ public class BombermanGame extends Application {
     }
 
     public void load(Stage stage, int level) {
+        stage.setTitle("Bomberman L&N");
+        Image icon = new Image("/Mew.jpg");
+        stage.getIcons().add(icon);
+        stage.setResizable(false);
         if (music != null) music.stopSound();
         music = Sound.main_bgm;
         music.loop();
@@ -199,11 +204,11 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        // Tao root container
-        root = new Group();
-        root.getChildren().add(canvas);
+        // Tao this.root container
+        this.root = new Group();
+        this.root.getChildren().add(canvas);
         // Tao scene
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(this.root);
         keyHandler = new KeyHandler(scene);
         map.createMap(keyHandler);
         items = map.getItems();
@@ -216,11 +221,11 @@ public class BombermanGame extends Application {
         player = map.getPlayer();
 
         // Add scene vao stage
-        stage.setTitle("Bomberman L&N");
+//        stage.setTitle("Bomberman L&N");
         stage.setScene(scene);
-        Image icon = new Image("/Mew.jpg");
-        stage.getIcons().add(icon);
-        stage.setResizable(false);
+//        Image icon = new Image("/Mew.jpg");
+//        stage.getIcons().add(icon);
+//        stage.setResizable(false);
 //        stage.set
         stage.show();
 
@@ -289,7 +294,6 @@ public class BombermanGame extends Application {
     }
 
     public void render() {
-        if (gameFunction == FUNCTION.PLAY) {
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             backGround.forEach((g -> g.render(gc)));
             items.forEach(g -> g.render(gc));
@@ -297,9 +301,9 @@ public class BombermanGame extends Application {
             enemies.forEach(g -> g.render(gc));
             player.render(gc);
 
-            root.getChildren().remove(textLife);
-            root.getChildren().remove(textEnemy);
-            root.getChildren().remove(textLevel);
+            this.root.getChildren().remove(textLife);
+            this.root.getChildren().remove(textEnemy);
+            this.root.getChildren().remove(textLevel);
 
             Font font = new Font("pixels", 20);
 
@@ -315,10 +319,9 @@ public class BombermanGame extends Application {
             textLevel.setFont(font);
             textLevel.setFill(Color.BLACK);
 
-            root.getChildren().add(textLevel);
-            root.getChildren().add(textLife);
-            root.getChildren().add(textEnemy);
-        }
+            this.root.getChildren().add(textLevel);
+            this.root.getChildren().add(textLife);
+            this.root.getChildren().add(textEnemy);
     }
 
 
