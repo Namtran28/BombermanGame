@@ -46,7 +46,7 @@ public class BombermanGame extends Application {
     private static Entity[][] moveEntitiesTable;
     private static Entity[][] itemsTable;
     public static Bomber player;
-    private static int level = 0;
+    private static int level = 2;
     public static boolean levelChanged = true;
     public static boolean endGame = false;
     public static boolean replay = false;

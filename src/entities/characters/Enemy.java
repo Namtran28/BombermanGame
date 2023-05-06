@@ -17,6 +17,7 @@ import java.util.Random;
 
 public abstract class Enemy extends Entity {
     protected char direction = ' ';
+    protected char _direction = ' ';
     public Enemy(int x, int y, Image img, int life) {
         super( x, y, img);
         this.life = life;
@@ -32,26 +33,41 @@ public abstract class Enemy extends Entity {
 
     protected abstract void chooseSprite();
 
-    public void chooseDirection() {
-        //if (x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0) {
+    public boolean chooseDirection() {
             Pair<Integer, Integer> nextStep = enemyFindPath.getNextStepByBFS(getYUnit(), getXUnit());
             int dy = nextStep.getKey();
             int dx = nextStep.getValue();
-            if (dx < this.getXUnit()) direction = 'L';
-            if (dx > this.getXUnit()) direction = 'R';
-            if (dy < this.getYUnit()) direction = 'U';
-            if (dy > this.getYUnit()) direction = 'D';
-        //}
+            if (dx < this.getXUnit()) {
+                _direction = 'L';
+                return true;
+            }
+            if (dx > this.getXUnit()) {
+                _direction = 'R';
+                return true;
+            }
+            if (dy < this.getYUnit()) {
+                _direction = 'U';
+                return true;
+            }
+            if (dy > this.getYUnit()) {
+                _direction = 'D';
+                return true;
+            }
+        return false;
     }
 
     public void moving() {
         BombermanGame.setMoveEntitiesTable(getYUnit(), getXUnit(), null);
-        if (!(this instanceof Minvo)) chooseDirectionRandom();
+        if (!(this instanceof Minvo || this instanceof Oneal)) chooseDirectionRandom();
         if (this instanceof Oneal || this instanceof Minvo) {
-            chooseDirection();
-            //chooseDirectionRandom();
+            if (!chooseDirection()) {
+                chooseDirectionRandom();
+            } else if (chooseDirection() && (x % Sprite.SCALED_SIZE != 0 || y % Sprite.SCALED_SIZE != 0)) {
+                chooseDirectionRandom();
+            } else {
+                direction = _direction;
+            }
         }
-//        BombermanGame.setTable(getYUnit(), getXUnit(), null);
         if (direction == 'D') {
             if (checkWall(x + 3, y + 1 + Sprite.SCALED_SIZE) && checkWall(x - 3 + Sprite.SCALED_SIZE, y + 1 + Sprite.SCALED_SIZE)) {
                 y++;
