@@ -1,7 +1,6 @@
 package entities.player;
 
 import entities.bombs.Bomb;
-import entities.characters.Enemy;
 import entities.items.*;
 import entities.tiles.Brick;
 import entities.tiles.Wall;
@@ -22,6 +21,7 @@ public class Bomber extends Entity {
     private int bombCounter = 1;
     private int bomb_size = 1;
     public Entity bomb;
+    private int _life;
 
     public Bomber() {
     }
@@ -34,6 +34,7 @@ public class Bomber extends Entity {
         flamePass = false;
         wallPass = false;
         STEP = 2;
+        _life = life;
     }
 
     private void chooseSprite() {
@@ -79,6 +80,7 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
+        _life = this.life;
         if (beDamaged) {
             if (hurtTick == 0) {
                 Sound.dieds.playSound();
@@ -119,7 +121,7 @@ public class Bomber extends Entity {
             }
             //
             if (!(checkWall(x - STEP, y + 4))) {
-                if ((double) ((y + 4) * 1.0 / Sprite.SCALED_SIZE) > (double) (((int) (y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
+                if ((double)((y + 4) * 1.0 / Sprite.SCALED_SIZE) > ((int)((y + 4) / Sprite.SCALED_SIZE) + 0.5)) {
                     direction = 'D';
                     move = true;
                     y++;
@@ -211,19 +213,16 @@ public class Bomber extends Entity {
         if (move && animate % 15 == 0) {
             Sound.move.playSound();
         }
-        int px = getXUnit();
-        int py = getYUnit();
-        if (beDamaged(px, py)) return;
         //if (!(BombermanGame.getTable()[py][px] instanceof Enemy)) BombermanGame.setTable(py, px, this);
     }
 
-    private boolean beDamaged(int px, int py) {
-        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
-            damaged();
-            return true;
-        }
-        return false;
-    }
+//    private boolean beDamaged(int px, int py) {
+//        if (BombermanGame.getMoveEntitiesTable()[getYUnit()][getXUnit()] instanceof Enemy && !isUnDead()) {
+//            damaged();
+//            return true;
+//        }
+//        return false;
+//    }
 
     private void checkDied(boolean died) {
         if (died) System.exit(0);
@@ -270,6 +269,9 @@ public class Bomber extends Entity {
         }
     }
 
+    public int getLife() {
+        return _life;
+    }
 
     public void getItem() {
         int px = getYUnit();

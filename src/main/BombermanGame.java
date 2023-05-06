@@ -14,15 +14,16 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import entities.Entity;
 import graphics.Sprite;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import playerInputs.KeyHandler;
 import sound.Sound;
 
@@ -47,9 +48,10 @@ public class BombermanGame extends Application {
     private static int level = 0;
     public static boolean levelChanged = true;
     private boolean running = true;
-    private boolean menu = true;
-    private boolean play = true;
-    private boolean exit = true;
+    private Group root = null;
+    private Text textLife = null;
+    private Text textLevel = null;
+    private Text textEnemy = null;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -143,7 +145,7 @@ public class BombermanGame extends Application {
         imageView.setFitHeight(Sprite.SCALED_SIZE * 15);
         imageView.setFitWidth(Sprite.SCALED_SIZE * 30);
 
-        Group root = new Group(imageView);
+        root = new Group(imageView);
         root.getChildren().add(start_button);
 //        root.getChildren().add(AI_button);
         root.getChildren().add(exit_button);
@@ -198,9 +200,8 @@ public class BombermanGame extends Application {
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
-        Group root = new Group();
+        root = new Group();
         root.getChildren().add(canvas);
-
         // Tao scene
         Scene scene = new Scene(root);
         keyHandler = new KeyHandler(scene);
@@ -235,8 +236,8 @@ public class BombermanGame extends Application {
                     stop();
                     return;
                 } else {
-                    render(stage);
                     update();
+                    render();
                 }
                 long frameTime = (now - lastUpdate) / 1000000;
 //                System.out.println(frameTime);
@@ -287,7 +288,7 @@ public class BombermanGame extends Application {
         }
     }
 
-    public void render(Stage stage) {
+    public void render() {
         if (gameFunction == FUNCTION.PLAY) {
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             backGround.forEach((g -> g.render(gc)));
@@ -295,6 +296,28 @@ public class BombermanGame extends Application {
             stillObjects.forEach(g -> g.render(gc));
             enemies.forEach(g -> g.render(gc));
             player.render(gc);
+
+            root.getChildren().remove(textLife);
+            root.getChildren().remove(textEnemy);
+            root.getChildren().remove(textLevel);
+
+            Font font = new Font("pixels", 20);
+
+            textLife = new Text(10, Sprite.SCALED_SIZE * HEIGHT + 22, "LIFE: " + player.getLife());
+            textLife.setFont(font);
+            textLife.setFill(Color.BLACK);
+
+            textEnemy = new Text(100, Sprite.SCALED_SIZE * HEIGHT + 22, "ENEMY: " + enemies.size());
+            textEnemy.setFont(font);
+            textEnemy.setFill(Color.BLACK);
+
+            textLevel = new Text(Sprite.SCALED_SIZE * WIDTH / 2 - 40, Sprite.SCALED_SIZE * HEIGHT + 22, "LEVEL: " + level);
+            textLevel.setFont(font);
+            textLevel.setFill(Color.BLACK);
+
+            root.getChildren().add(textLevel);
+            root.getChildren().add(textLife);
+            root.getChildren().add(textEnemy);
         }
     }
 
