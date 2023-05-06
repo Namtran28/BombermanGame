@@ -106,7 +106,7 @@ public class Bomber extends Entity {
         if (keyHandler.isPressed(KeyCode.SPACE)) {
             setBomb();
         }
-        System.out.println(this.life);
+//        System.out.println(this.life);
     }
 
     private void moving() {
