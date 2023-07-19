@@ -16,6 +16,8 @@ public class Sprite {
 	protected int _realWidth;
 	protected int _realHeight;
 	private SpriteSheet _sheet;
+	public final int _width;
+	public final int _height;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -181,6 +183,8 @@ public class Sprite {
 	public static Sprite powerup_detonator = new Sprite(DEFAULT_SIZE, 4, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_bombpass = new Sprite(DEFAULT_SIZE, 5, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_flamepass = new Sprite(DEFAULT_SIZE, 6, 10, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite test = new Sprite(360, 300, 0, 0, SpriteSheet.test, 360, 300);
 	
 	public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
 		SIZE = size;
@@ -191,6 +195,18 @@ public class Sprite {
 		_realWidth = rw;
 		_realHeight = rh;
 		load();
+	}
+
+	public Sprite(int width, int height, int x, int y, SpriteSheet sheet, int rw, int rh) {
+		_width = width;
+		_height = height;
+		_pixels = new int[_height * _width];
+		_x = x * _width;
+		_y = y * _height;
+		_sheet = sheet;
+		_realWidth = rw;
+		_realHeight = rh;
+		load2();
 	}
 	
 	public Sprite(int size, int color) {
@@ -212,7 +228,15 @@ public class Sprite {
 			}
 		}
 	}
-	
+
+	private void load2() {
+		for (int y = 0; y < _height; y++) {
+			for (int x = 0; x < _width; x++) {
+				_pixels[x + y * _width] = _sheet._pixels[(x + _x) + (y + _y) * _sheet.WIDTH];
+			}
+		}
+	}
+
 	public static Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2, int animate, int time) {
 		int calc = animate % time;
 		int diff = time / 3;
@@ -257,6 +281,23 @@ public class Sprite {
         Image input = new ImageView(wr).getImage();
         return resample(input, SCALED_SIZE / DEFAULT_SIZE);
     }
+
+	public Image getFxImag2() {
+		WritableImage wr = new WritableImage(_width, _height);
+		PixelWriter pw = wr.getPixelWriter();
+		for (int x = 0; x < _height; x++) {
+			for (int y = 0; y < _width; y++) {
+				if ( _pixels[x + y * _width] == TRANSPARENT_COLOR) {
+					pw.setArgb(x, y, 0);
+				}
+				else {
+					pw.setArgb(x, y, _pixels[x + y * _width]);
+				}
+			}
+		}
+		Image input = new ImageView(wr).getImage();
+		return resample(input, 1);
+	}
 
 	private Image resample(Image input, int scaleFactor) {
 		final int W = (int) input.getWidth();

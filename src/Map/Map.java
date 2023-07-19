@@ -75,7 +75,7 @@ public class Map {
                     item = new Portal(i, j, Sprite.portal.getFxImage());
                 } else if (map[j][i] == 'p') {
                     table[j][i] = new Grass(i, j, Sprite.grass.getFxImage());
-                    player = new Bomber(i, j, Sprite.player_right.getFxImage(), 3, keyHandler);
+                    player = new Bomber(i, j, Sprite.test.getFxImage2(), 3, keyHandler);
 //                    moveEntitiesTable[j][i] = player;
                 } else if (map[j][i] == '1') {
                     enemy = new Balloom(i, j, Sprite.balloom_left1.getFxImage(), 1);

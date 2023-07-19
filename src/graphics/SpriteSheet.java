@@ -13,15 +13,26 @@ public class SpriteSheet {
 
 	private String _path;
 	public final int SIZE;
+	public final int HEIGHT;
+	public final int WIDTH;
 	public int[] _pixels;
 	public BufferedImage image;
 
 	public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256);
+	public static SpriteSheet test = new SpriteSheet("/textures/classic.png", 1800, 3960);
 	
 	public SpriteSheet(String path, int size) {
 		_path = path;
 		SIZE = size;
 		_pixels = new int[SIZE * SIZE];
+		load();
+	}
+
+	public SpriteSheet(String path, int height, int width) {
+		_path = path;
+		HEIGHT = height;
+		WIDTH = width;
+		_pixels = new int[HEIGHT * WIDTH];
 		load();
 	}
 	
